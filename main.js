@@ -8,6 +8,7 @@ var spawn = require("spawn");
 var worker = require("worker");
 var transfer = require("transfer");
 var warrior = require("warrior");
+var harvester = require("harvester");
 var totCouriers=0;
 var totHarvesters=0;
 var totBuilders = 0;
@@ -49,6 +50,11 @@ for(var name in Game.creeps) {
     {
         warrior(creep);
         totWarriors++;
+    }
+    else if(creep.memory.role == 'harvester')
+    {
+        harvester(creep);
+        totHarvesters++;
     }
 }
 
