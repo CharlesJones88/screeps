@@ -9,6 +9,7 @@ module.exports = function()
     var builders;
     var warriors;
     var harvesters;
+    var workers;
     var medics;
     var spawn1 = Game.spawns.Spawn1;
     //Bodies
