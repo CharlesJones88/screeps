@@ -8,6 +8,7 @@
  * You can import it from another modules like this:
  * var mod = require('Initial'); // -> 'a thing'
  */
+Memory.curSource = 0;
 var spawn = Game.spawns.Spawn1;
 var sources = spawn.room.find(FIND_SOURCES);
 var lairs = spawn.room.find(FIND_HOSTILE_STRUCTURES);
