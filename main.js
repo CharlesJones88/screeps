@@ -40,8 +40,8 @@ for(var name in Game.creeps) {
     }
     else if(creep.memory.role == undefined)
     {
-        creep.memory.role = "worker"
-        creep.memory.task = "coming"
+        creep.memory.role = "worker";
+        creep.memory.task = "coming";
         creep.memory.target = Memory.safeSources[Memory.curSource];
     }
     else if(creep.memory.role == "warrior")

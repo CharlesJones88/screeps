@@ -2,10 +2,10 @@
  * Created by charlesjones on 5/26/15.
  */
 module.exports = function (creep) {
-    var sources = creep.memory.target
+    var sources = creep.memory.target;
     if(sources == undefined || sources == 1)
     {
-        sources = creep.pos.findClosest(FIND_SOURCES)
+        sources = creep.room.find(FIND_SOURCES);
     }
     else
     {
@@ -28,7 +28,7 @@ module.exports = function (creep) {
         }
         creep.moveTo(Game.spawns.Spawn1);
 
-        creep.transferEnergy(Game.spawns.Spawn1)
+        creep.transferEnergy(Game.spawns.Spawn1);
 
     }
 
