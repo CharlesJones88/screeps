@@ -10,8 +10,8 @@ module.exports = function(creep)
     }
     else
     {
-        var post = creep.memory.post
-        creep.moveTo(post)
+        var post = creep.memory.post;
+        creep.moveTo(post);
         console.log("going to " + post.pos)
     }
 }

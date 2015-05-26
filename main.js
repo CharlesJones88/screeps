@@ -55,6 +55,7 @@ for(var name in Game.creeps) {
     {
         harvester(creep);
         totHarvesters++;
+
     }
 }
 

@@ -2,17 +2,18 @@
  * Created by charlesjones on 5/26/15.
  */
 module.exports = function (creep) {
-    /*
-     if(sources == undefined || sources == 1)
-     {
-     sources = creep.pos.findClosest(FIND_SOURCES)
-     }
-     else{
-     var sources = creep.memory.target
-     sources = Game.getObjectById(sources["id"])
-     }*/
-    var sources = creep.memory.target
-    sources = Game.getObjectById(sources["id"])
+    var sources = creep.memory.target;
+    if(sources == undefined || sources == 1)
+    {
+        sources = creep.pos.findClosest(FIND_SOURCES)
+    }
+    else {
+        sources = creep.memory.target;
+        sources = Game.getObjectById(sources["id"])
+    }
+    // = creep.memory.target;
+    //sources = Game.getObjectById(sources["id"]);
+    var target;
     if(creep.energy < creep.energyCapacity) {
         creep.memory.task = "coming";
         creep.moveTo(sources);
@@ -20,32 +21,30 @@ module.exports = function (creep) {
         creep.harvest(sources);
     }
     else {
-        var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"})
-        for(var x in nearby)
-        {
+        var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"});
+        for(var x in nearby) {
             nearby[x].move(TOP_RIGHT);
         }
 
-        if(creep.memory.task == "meeting")
-        {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
+        if(creep.memory.task == "meeting") {
+            target = creep.room.find(FIND_MY_CREEPS, {filter:
                 function(object){
-                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}})
+                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)
+                        return object;
+                }
+            });
 
-            if(target  == undefined)
-            {
+            if(target  == undefined) {
                 creep.memory.task ="going";
             }
-            else
-            {
+            else {
 
                 creep.moveTo(target);
                 creep.transferEnergy(target);
             }
         }
-        else
-        {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
+        else {
+            target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
                 function(object){
                     if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}})
             if(target != undefined && target != null)
