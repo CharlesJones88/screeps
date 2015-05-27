@@ -8,7 +8,7 @@
  * You can import it from another modules like this:
  * var mod = require('Initial'); // -> 'a thing'
  */
-module.exports = function() {
+module.exports = function(spawn1) {
     Memory.curSource = 0;
     this.spawn = Game.spawns.Spawn1;
     this.sources = this.spawn.room.find(FIND_SOURCES);
