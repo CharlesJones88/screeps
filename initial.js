@@ -40,5 +40,5 @@ var Setup = function() {
         }
         Memory.safeSources = this.sources;
     };
-    return setup;
+    return Setup;
 };
