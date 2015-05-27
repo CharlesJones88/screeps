@@ -106,7 +106,10 @@ module.exports = function()
         console.log(Memory.curSource);
         console.log("Spawning worker for " + Memory.curSource);
         Memory.curSource += 1;
-        if(Memory.curSource >= Memory.safeSources.length){Memory.curSource = 0}
+        console.log('broke here');
+        if(Memory.curSource >= Memory.safeSources.length) {
+            Memory.curSource = 0;
+        }
         target = Memory.safeSources[index];
 
         spawn1.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming"});
