@@ -55,8 +55,5 @@ module.exports = function (creep) {
             creep.moveTo(Game.spawns.Spawn1);
             creep.transferEnergy(Game.spawns.Spawn1)
         }
-
-
-
     }
-}
+};

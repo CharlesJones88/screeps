@@ -1,6 +1,7 @@
 /**
  * Created by charlesjones on 5/26/15.
  */
+var setup = require('initial');
 var courier = require("courier");
 var builder = require("builder");
 var spawn = require("spawn");
@@ -14,8 +15,7 @@ var totBuilders = 0;
 var totTransfer = 0;
 var totWorkers =0;
 var totWarriors=0;
-console.log(Setup());
-var setup = new Setup();
+
 
 
 //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
