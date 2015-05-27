@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="ScreepsEngine" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$USER_HOME$/ScreepsEngine" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$USER_HOME$/ScreepsEngine" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

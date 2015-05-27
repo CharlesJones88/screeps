@@ -14,7 +14,9 @@ var totBuilders = 0;
 var totTransfer = 0;
 var totWorkers =0;
 var totWarriors=0;
-var setup = new Setup;
+console.log(Setup);
+console.log(Setup());
+var setup = new Setup();
 
 
 //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
