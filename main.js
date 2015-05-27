@@ -1,7 +1,6 @@
 /**
  * Created by charlesjones on 5/26/15.
  */
-require('initial');
 var courier = require("courier");
 var builder = require("builder");
 var spawn = require("spawn");
