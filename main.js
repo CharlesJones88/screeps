@@ -67,4 +67,4 @@ Memory.builders = totBuilders;
 Memory.workers = totWorkers;
 Memory.transfers = totTransfer;
 Memory.warriors = totWarriors;
-spawn();
+spawn(Game.spawns.Spawn1);
