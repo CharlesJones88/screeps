@@ -49,7 +49,8 @@ for(var name in Game.creeps) {
         totBuilders++;
     }
     else if(creep.memory.role == 'worker') {
-        if(creep.memory.target == undefined)creep.memory.source = Memory.safeSources[Memory.curSource];
+        if(creep.memory.target == undefined)
+            //creep.memory.source = Memory.safeSources[Memory.curSource];
         worker(creep);
         totWorkers++;
     }
