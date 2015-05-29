@@ -96,7 +96,8 @@ module.exports = function() {
                 break;
             }
         }
-        console.log("Creating warrior for " + target.name);
+        console.log(target);
+        //console.log("Creating warrior for " + target.name);
         spawn1.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting"})
     }
     else if(Memory.workers < workers ) {
