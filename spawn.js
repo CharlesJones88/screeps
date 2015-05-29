@@ -109,7 +109,7 @@ module.exports = function() {
         //if(Memory.curSource >= Memory.safeSources.length) {
         //    Memory.curSource = 0;
         //}
-        target = Memory.safeSources[index];
+        //target = Memory.safeSources[index];
 
         spawn1.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming"});
     }
