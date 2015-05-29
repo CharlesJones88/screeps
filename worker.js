@@ -3,8 +3,7 @@
  */
 module.exports = function (creep) {
     var sources = creep.memory.target;
-    if(sources == undefined || sources == 1)
-    {
+    if(sources == undefined || sources == 1) {
         sources = creep.pos.findClosest(FIND_SOURCES)
     }
     else {
@@ -15,10 +14,16 @@ module.exports = function (creep) {
     //sources = Game.getObjectById(sources["id"]);
     var target;
     if(creep.energy < creep.energyCapacity) {
-        creep.memory.task = "coming";
         creep.moveTo(sources);
         creep.memory.task = "working";
         creep.harvest(sources);
+        var transfer = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
+            function(object){
+                if(object.memory.role =="transfer" && object.memory.target == "none")return object;}})
+        if(creep.pos.isNearTo(transfer))
+        {
+            creep.transferEnergy(transfer);
+        }
     }
     else {
         var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"});

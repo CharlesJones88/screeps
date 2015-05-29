@@ -1,9 +1,16 @@
 /**
- * Created by charlesjones on 5/26/15.
+ * Created by charles on 5/28/15.
  */
-module.exports = function(creep)
+/*
+ * Module code goes here. Use 'module.exports' to export things:
+ * module.exports = 'a thing';
+ *
+ * You can import it from another modules like this:
+ * var mod = require('medic'); // -> 'a thing'
+ */
+module.exports = function(object)
 {
-    var attackFlag = Game.flags.Attack;
+    var attackFlag = Game.flags.Attack
     if(attackFlag && creep.room != Game.flags.Attack.room)
     {
         creep.moveTo(Game.flags.Attack);
@@ -11,8 +18,8 @@ module.exports = function(creep)
     }
     else
     {
-        var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-            if(object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
+        var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object){
+            if(object.memory.role ="warrior" && object.energy < object.energyCapacity)
             {
                 return object;
             }
@@ -40,8 +47,8 @@ module.exports = function(creep)
             else
             {
 
-                var post = creep.memory.post;
-                post = Game.getObjectById(post.id);
+                var post = creep.memory.post
+                post = Game.getObjectById(post.id)
                 creep.moveTo(post)
             }
         }
@@ -50,4 +57,4 @@ module.exports = function(creep)
     {
         creep.heal(creep);
     }
-};
+}

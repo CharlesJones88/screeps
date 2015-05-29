@@ -16,11 +16,11 @@ module.exports = function (creep) {
         {
             creep.memory.task = "going";
             creep.moveTo(spawn);
-            if(spawn.energy < 500)
+            if(Memory.totalEnergy < 500)
             {
                 spawn.transferEnergy(creep,25);
             }
-            else if(spawn.energy < 100)
+            else if(Memory.totalEnergy < 100)
             {
                 spawn.transferEnergy(creep,5);
             }
@@ -28,7 +28,6 @@ module.exports = function (creep) {
             {
                 spawn.transferEnergy(creep);
             }
-
         }
         else
         {

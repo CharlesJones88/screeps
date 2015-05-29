@@ -10,6 +10,9 @@
  */
 Memory.curSource = 0;
 Memory.safeSources = 0;
+if(Game.spawns.Spawn1.room.name == 'sim') {
+    Memory.safeSources = Game.spawns.Spawn1.room.find(FIND_SOURCES);
+}
 var spawn = Game.spawns.Spawn1;
 var sources = spawn.room.find(FIND_SOURCES);
 var lairs = spawn.room.find(FIND_HOSTILE_STRUCTURES);
@@ -29,7 +32,6 @@ for(var lair in lairs)
     {
         for(var y in indices[x])
         {
-
             var target = indices[x][y];
             var index = sources.indexOf(target);
             if (index > -1) {

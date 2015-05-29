@@ -8,74 +8,80 @@ module.exports = function() {
     var warriors;
     //var harvesters;
     var workers;
-    //var medics;
+    var medics;
     var spawn1 = Game.spawns.Spawn1;
+    if(spawn1.spawning != null)
+        return;
     //Bodies
-    var workerBody = [WORK,WORK,CARRY,MOVE];
-    var transferBody = [CARRY,MOVE,MOVE,MOVE];
-    var courierBody = [CARRY,WORK,WORK,MOVE];
-    var warriorBody = [TOUGH,ATTACK,ATTACK,MOVE,MOVE];
-    /*
-     var target;
-     for(var source in Memory.safeSources)
-     {
-     source = Memory.safeSources[source];
-     var creeps = spawn1.room.find(FIND_MY_CREEPS,{filter:{target:source}})
-     if(creeps.length < 3)
-     {
-     target = source;
-     spawn1.createCreep(workerBody,undefined,{role:"worker",target:target});
-     break;
-     }
-     }
-     var creeps = spawn1.room.find(FIND_MY_CREEPS,{filter:{role:"trasfer",target:source}})
-     */
-
+    var extensions = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {filter:{structureType:"extension",energy:50}});
+    if(Memory.totalEnergy >= 700) {
+        var workerBody = [WORK, WORK, CARRY, MOVE];
+        var transferBody = [CARRY, MOVE, MOVE, MOVE];
+        var courierBody = [CARRY, WORK, WORK, MOVE];
+        var warriorBody = [TOUGH, ATTACK, ATTACK, MOVE, MOVE];
+        var builderBody =  [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    }
+    else if(Memory.totalEnergy >= 600)
+    {
+        var workerBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+        var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        var courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE];
+        var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
+        var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    }
+    else if(Memory.totalEnergy >= 500)
+    {
+        var workerBody = [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+        var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        var courierBody = [WORK,WORK,WORK,WORK,CARRY,MOVE];
+        var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
+        var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+    }
+    else
+    {
+        var workerBody = [WORK,CARRY,MOVE];
+        var transferBody = [CARRY,MOVE,MOVE,MOVE];
+        var courierBody = [CARRY,WORK,WORK,MOVE];
+        var warriorBody = [ATTACK,ATTACK,MOVE,MOVE];
+        var builderBody = [WORK,CARRY,MOVE,MOVE];
+    }
 
     //First tier
-    if(spawn1.energy > 5500) {
-        workers = 15;
-        couriers = 12;
-        warriors = 12;
-        builders = 5;
-    }
-    else if(spawn1.energy > 4250) {
-        workers = 15;
-        warriors = 9;
-        couriers = 9;
-        builders = 5;
-    }
-    else if(spawn1.energy > 3500) {
-        workers = 13;
-        warriors = 6;
-        couriers = 6;
-        builders = 5;
-    }
-    else if(spawn1.energy > 1500) {
-        workers = 9;
-        warriors = 3;
-        couriers = 4;
-        builders =4;
-
-    }
-    else if(spawn1.energy > 1000) {
+    if(Memory.totalEnergy > 700)
+    {
         workers = 7;
-        warriors = 1;
+        warriors = 5;
         couriers = 3;
-        builders = 3;
+        builders = 1;
+        transfers = workers+4;
+        if(Memory.workers > 6 && Memory.transfers > 9 && Memory.couriers > 2)
+        {
+            warriors = 10;
+        }
     }
-    else if(spawn1.energy > 750) {
-        //harvesters = 10;
-        workers = 5;
+    else if(Memory.totalEnergy > 525)
+    {
+        workers = 7;
+        warriors = 2;
+        couriers = 3;
+        builders = 1;
+        transfers = workers+2;
+    }
+    else if(Memory.totalEnergy > 450)
+    {
+        workers = 6;
+        builders = 1;
         couriers = 2;
+        transfers = workers
     }
-    else {
-        //harvesters = 5;
-        workers = 2;
-        couriers = 0;
-        builders = 0;
+    else
+    {
+        workers =4;
+        couriers = 1;
+        builders = 1;
+        transfers = workers
     }
-    transfers = workers;
+    console.log("TEST");
 
     // CREATE LOGIC
     var target;
@@ -90,6 +96,7 @@ module.exports = function() {
                 break;
             }
         }
+        console.log("Creating warrior for " + target.name);
         spawn1.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting"})
     }
     else if(Memory.workers < workers ) {
@@ -130,8 +137,8 @@ module.exports = function() {
         }
         spawn1.createCreep(transferBody,undefined, {role:"transfer", target:"none", task:task});
     }
-    else if(Memory.builders < builders && spawn1.room.find(FIND_CONSTRUCTION_SITES).length) {
+    else if(Memory.builders < builders && (spawn1.room.find(FIND_CONSTRUCTION_SITES).length || spawn1.room.find(FIND_MY_STRUCTURES,{filter:function(object) { if(object.hits < object.hitsMax) return object; }}).length)) {
         console.log("Spawning builder");
-        spawn1.createCreep([WORK,CARRY,MOVE,MOVE],undefined, {role:"builder"});
+        spawn1.createCreep(builderBody,undefined, {role:"builder"});
     }
 };
