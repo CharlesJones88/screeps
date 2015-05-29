@@ -11,6 +11,7 @@ var construct = require("construct");
 var totCouriers=0;
 var totBuilders = 0;
 var totTransfer = 0;
+var totHarvesters = 0;
 var totWorkers =0;
 var totWarriors=0;
 Memory.totalEnergy = 0;
