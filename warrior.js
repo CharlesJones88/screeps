@@ -35,13 +35,12 @@ module.exports = function(creep)
             {
                 creep.moveTo(target);
                 creep.attack(target);
-
             }
             else
             {
 
                 var post = creep.memory.post;
-                post = Game.getObjectById(post.id);
+                //post = Game.getObjectById(post.id);
                 creep.moveTo(post)
             }
         }

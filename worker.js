@@ -28,7 +28,7 @@ module.exports = function (creep) {
     else {
         var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"});
         for(var x in nearby) {
-            nearby[x].move(TOP_RIGHT);
+            //nearby[x].move(TOP_RIGHT);
         }
 
         if(creep.memory.task == "meeting") {
@@ -56,6 +56,7 @@ module.exports = function (creep) {
             {
                 creep.memory.task = "meeting"
             }
+
             creep.memory.task = "going";
             creep.moveTo(Game.spawns.Spawn1);
             creep.transferEnergy(Game.spawns.Spawn1)
