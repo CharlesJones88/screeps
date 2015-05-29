@@ -8,30 +8,35 @@
  * You can import it from another modules like this:
  * var mod = require('Initial'); // -> 'a thing'
  */
-module.exports = function(spawn1) {
-    Memory.curSource = 0;
-    this.spawn = Game.spawns.Spawn1;
-    this.sources = this.spawn.room.find(FIND_SOURCES);
-    this.lairs = spawn.room.find(FIND_HOSTILE_STRUCTURES);
-    this.count = 0;
-    for (var lair in this.lairs) {
-        lair = this.lairs[this.count];
-        var right = lair.pos.x + 6;
-        var bottom = lair.pos.y + 6;
-        var left = lair.pos.x - 6;
-        var top = lair.pos.y - 6;
+Memory.curSource = 0;
+Memory.safeSources = 0;
+var spawn = Game.spawns.Spawn1;
+var sources = spawn.room.find(FIND_SOURCES);
+var lairs = spawn.room.find(FIND_HOSTILE_STRUCTURES);
+var count = 0;
+for(var lair in lairs)
+{
+    lair = lairs[count];
+    var right = lair.pos.x + 6;
+    var bottom = lair.pos.y + 6;
+    var left = lair.pos.x - 6;
+    var top = lair.pos.y - 6;
 
-        var indices = lair.room.lookAtArea('source', top, left, bottom, right);
-        for (var x in indices) {
-            for (var y in indices[x]) {
-                var target = indices[x][y];
-                var index = this.sources.indexOf(target);
-                if (index > -1) {
-                    this.sources.splice(index, 1);
-                }
+    var indices = lair.room.lookForAtArea('source',top,left,bottom,right);
+
+    var hit;
+    for(var x in indices)
+    {
+        for(var y in indices[x])
+        {
+
+            var target = indices[x][y];
+            var index = sources.indexOf(target);
+            if (index > -1) {
+                sources.splice(index, 1);
             }
         }
-        this.count++;
     }
-    Memory.safeSources = this.sources;
-};
+    count++;
+}
+Memory.safeSources = sources;
