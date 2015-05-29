@@ -33,50 +33,43 @@ module.exports = function() {
 
 
     //First tier
-    if(spawn1.energy > 5500)
-    {
+    if(spawn1.energy > 5500) {
         workers = 15;
         couriers = 12;
         warriors = 12;
         builders = 5;
     }
-    else if(spawn1.energy > 4250)
-    {
+    else if(spawn1.energy > 4250) {
         workers = 15;
         warriors = 9;
         couriers = 9;
         builders = 5;
     }
-    else if(spawn1.energy > 3500)
-    {
+    else if(spawn1.energy > 3500) {
         workers = 13;
         warriors = 6;
         couriers = 6;
         builders = 5;
     }
-    else if(spawn1.energy > 1500)
-    {
+    else if(spawn1.energy > 1500) {
         workers = 9;
         warriors = 3;
         couriers = 4;
         builders =4;
 
     }
-    else if(spawn1.energy > 1000)
-    {
+    else if(spawn1.energy > 1000) {
         workers = 7;
         warriors = 1;
         couriers = 3;
         builders = 3;
     }
-    else if(spawn1.energy > 750)
-    {
+    else if(spawn1.energy > 750) {
         //harvesters = 10;
         workers = 5;
         couriers = 2;
     }
-    else
-    {
+    else {
         //harvesters = 5;
         workers = 2;
         couriers = 0;
@@ -86,12 +79,10 @@ module.exports = function() {
 
     // CREATE LOGIC
     var target;
-    if(Memory.warriors < warriors)
-    {
+    if(Memory.warriors < warriors) {
         var flags = spawn1.room.find(FIND_FLAGS, {filter:{color:COLOR_RED}});
 
-        for(var flag in flags)
-        {
+        for(var flag in flags) {
             flag = flags[flag];
             var creeps = flag.room.find(FIND_MY_CREEPS, {filter:{role:"warrior",post: flag}});
             if(creeps.length < warriors/flags.length) {

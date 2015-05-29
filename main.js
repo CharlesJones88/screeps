@@ -21,7 +21,6 @@ var totWarriors=0;
 //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
 
 for(var name in Game.creeps) {
-    setup(Game.spawns.Spawn1);
     var creep = Game.creeps[name];
     if(creep.memory.role == "courier")
     {
