@@ -96,7 +96,7 @@ module.exports = function() {
                 break;
             }
         }
-        console.log(target);
+        console.log(target + " warrior");
         //console.log("Creating warrior for " + target.name);
         spawn1.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting"})
     }
@@ -105,9 +105,10 @@ module.exports = function() {
         console.log(Memory.curSource);
         console.log("Spawning worker for " + Memory.curSource);
         Memory.curSource += 1;
-        if(Memory.curSource >= Memory.safeSources.length) {
-            Memory.curSource = 0;
-        }
+        console.log(Memory.safeSources);
+        //if(Memory.curSource >= Memory.safeSources.length) {
+        //    Memory.curSource = 0;
+        //}
         target = Memory.safeSources[index];
 
         spawn1.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming"});
