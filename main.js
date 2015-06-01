@@ -36,7 +36,7 @@ for(var name in Game.creeps) {
 
     //var droppped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
     var dropped = creep.room.find(FIND_DROPPED_ENERGY);
-    if(creep.pos.isNearTo(droppped))
+    if(creep.pos.isNearTo(dropped))
     {
         creep.pickup(dropped);
     }
