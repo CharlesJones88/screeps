@@ -34,7 +34,8 @@ var totalEnergy = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES,
 for(var name in Game.creeps) {
     var creep = Game.creeps[name];
 
-    var droppped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
+    //var droppped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
+    var dropped = creep.room.find(FIND_DROPPED_ENERGY);
     if(creep.pos.isNearTo(droppped))
     {
         creep.pickup(dropped);

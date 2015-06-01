@@ -38,12 +38,10 @@ module.exports = function (creep) {
                         return object;
                 }
             });
-
             if(target  == undefined) {
                 creep.memory.task ="going";
             }
             else {
-
                 creep.moveTo(target);
                 creep.transferEnergy(target);
             }
@@ -51,9 +49,8 @@ module.exports = function (creep) {
         else {
             target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
                 function(object){
-                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}})
-            if(target != undefined && target != null)
-            {
+                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}});
+            if(target != undefined && target != null) {
                 creep.memory.task = "meeting"
             }
 
