@@ -76,7 +76,7 @@ module.exports = function() {
     }
     else
     {
-        workers =4;
+        workers = 4;
         couriers = 1;
         builders = 1;
         transfers = workers
@@ -103,7 +103,9 @@ module.exports = function() {
     else if(Memory.workers < workers ) {
         var index = Memory.curSource;
         console.log(Memory.curSource);
-        console.log("Spawning worker for " + Memory.curSource);
+        console.log(workers);
+        console.log(Memory.workers);
+        console.log("Spawning worker for " + Memory.curSworkerource);
         Memory.curSource += 1;
         console.log(Memory.safeSources);
         //if(Memory.curSource >= Memory.safeSources.length) {
