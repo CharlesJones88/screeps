@@ -19,7 +19,7 @@ module.exports = function(creep)
         }});
         if(target) {
             creep.moveTo(target);
-
+            console.log("Move to hostile creep");
             creep.attack(target);
         }
         else
@@ -34,6 +34,7 @@ module.exports = function(creep)
             if(target)
             {
                 creep.moveTo(target);
+                console.log("warrior move to target");
                 creep.attack(target);
             }
             else
@@ -41,7 +42,8 @@ module.exports = function(creep)
 
                 var post = creep.memory.post;
                 //post = Game.getObjectById(post.id);
-                creep.moveTo(post)
+                creep.moveTo(post);
+                console.log("warrior move to post");
             }
         }
     }
