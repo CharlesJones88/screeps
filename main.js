@@ -22,10 +22,8 @@ Memory.totalEnergy += spawn1.energy;
 //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
 var totalEnergy = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES,
     {
-        filter:function(object)
-        {
-            if(object.structureType == "extension")
-            {
+        filter:function(object) {
+            if(object.structureType == "extension") {
              Memory.totalEnergy += object.energy;
             }
         }
@@ -33,15 +31,11 @@ var totalEnergy = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES,
 
 for(var name in Game.creeps) {
     var creep = Game.creeps[name];
-
-    //var droppped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
     var dropped = creep.room.find(FIND_DROPPED_ENERGY);
-    if(creep.pos.isNearTo(dropped))
-    {
+    if(creep.pos.isNearTo(dropped)) {
         creep.pickup(dropped);
     }
-    if(creep.memory.role == "courier")
-    {
+    if(creep.memory.role == "courier") {
         courier(creep);
         totCouriers++;
     }
@@ -50,8 +44,6 @@ for(var name in Game.creeps) {
         totBuilders++;
     }
     else if(creep.memory.role == 'worker') {
-        if(creep.memory.target == undefined)
-            //creep.memory.source = Memory.safeSources[Memory.curSource];
         worker(creep);
         totWorkers++;
     }
@@ -59,22 +51,18 @@ for(var name in Game.creeps) {
         transfer(creep);
         totTransfer++;
     }
-    else if(creep.memory.role == undefined)
-    {
+    else if(creep.memory.role == undefined) {
         creep.memory.role = "worker";
         creep.memory.task = "coming";
         creep.memory.target = Memory.safeSources[Memory.curSource];
     }
-    else if(creep.memory.role == "warrior")
-    {
+    else if(creep.memory.role == "warrior") {
         warrior(creep);
         totWarriors++;
     }
-    else if(creep.memory.role == 'harvester')
-    {
+    else if(creep.memory.role == 'harvester') {
         harvester(creep);
         totHarvesters++;
-
     }
 }
 
