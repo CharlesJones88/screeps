@@ -2,147 +2,251 @@
  * Created by charlesjones on 5/26/15.
  */
 module.exports = function() {
-    var transfers;
-    var couriers;
-    var builders;
-    var warriors;
-    //var harvesters;
-    var workers;
-    var medics;
-    var spawn1 = Game.spawns.Spawn1;
-    if(spawn1.spawning != null)
-        return;
-    //Bodies
-    var extensions = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES, {filter:{structureType:"extension",energy:50}});
-    if(Memory.totalEnergy >= 700) {
-        var workerBody = [WORK, WORK, CARRY, MOVE];
-        var transferBody = [CARRY, MOVE, MOVE, MOVE];
-        var courierBody = [CARRY, WORK, WORK, MOVE];
-        var warriorBody = [TOUGH, ATTACK, ATTACK, MOVE, MOVE];
-        var builderBody =  [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-    }
-    else if(Memory.totalEnergy >= 600)
-    {
-        var workerBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-        var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE];
-        var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
-        var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-    }
-    else if(Memory.totalEnergy >= 500)
-    {
-        var workerBody = [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
-        var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var courierBody = [WORK,WORK,WORK,WORK,CARRY,MOVE];
-        var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
-        var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-    }
-    else
-    {
-        var workerBody = [WORK,CARRY,MOVE];
-        var transferBody = [CARRY,MOVE,MOVE,MOVE];
-        var courierBody = [CARRY,WORK,WORK,MOVE];
-        var warriorBody = [ATTACK,ATTACK,MOVE,MOVE];
-        var builderBody = [WORK,CARRY,MOVE,MOVE];
-    }
+    for(var room in Memory.rooms) {
+        room = Game.rooms[room];
 
-    //First tier
-    if(Memory.totalEnergy > 700)
-    {
-        workers = 7;
-        warriors = 5;
-        couriers = 3;
-        builders = 1;
-        transfers = workers+4;
-        if(Memory.workers > 6 && Memory.transfers > 9 && Memory.couriers > 2)
-        {
-            warriors = 10;
+        if (room == undefined)continue;
+        if (room.memory.safeSources == undefined) {
+            room.memory.safeSources = getSafeSources(room);
+            room.memory.curSource = 0;
         }
-    }
-    else if(Memory.totalEnergy > 525)
-    {
-        workers = 7;
-        warriors = 2;
-        couriers = 3;
-        builders = 1;
-        transfers = workers+2;
-    }
-    else if(Memory.totalEnergy > 450)
-    {
-        workers = 6;
-        builders = 1;
-        couriers = 2;
-        transfers = workers
-    }
-    else
-    {
-        workers = 4;
-        couriers = 1;
-        builders = 1;
-        transfers = workers
-    }
-    console.log("TEST");
+        var roomEnergy = calculateRoomEnergy(room);
+        room.memory.roomEnergy = roomEnergy;
 
-    // CREATE LOGIC
-    var target;
-    if(Memory.warriors < warriors) {
-        var flags = spawn1.room.find(FIND_FLAGS, {filter:{color:COLOR_RED}});
+        var transfers;
+        var couriers;
+        var builders;
+        var warriors;
+        var workers;
+        var medics;
 
-        for(var flag in flags) {
-            flag = flags[flag];
-            var creeps = flag.room.find(FIND_MY_CREEPS, {filter:{role:"warrior",post: flag}});
-            if(creeps.length < warriors/flags.length) {
-                target = flag;
-                break;
-            }
+        var Tbuilders = countType(room, "builder");
+        var Ttransfers = countType(room, "transfer");
+        var Tcouriers = countType(room, "courier");
+        var Tworkers = countType(room, "worker");
+        var Twarriors = countType(room, "warrior");
+        var Tmedics = countType(room, "medic");
+
+        var sSources = room.memory.safeSources.length;
+
+        //Bodies
+        var workerBody;
+        var transferBody;
+        var courierBody;
+        var warriorBody;
+        var builderBody;
+
+        if(roomEnergy >= 900) {
+            workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+            transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+            courierBody = [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,WORK,MOVE,MOVE,MOVE];
+            warriorBody = [TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE];
+            builderBody = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
         }
-        console.log(target + " warrior");
-        //console.log("Creating warrior for " + target.name);
-        spawn1.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting"})
-    }
-    else if(Memory.workers < workers ) {
-        var index = Memory.curSource;
-        console.log(Memory.curSource);
-        console.log(workers);
-        console.log(Memory.workers);
-        console.log("Spawning worker for " + Memory.curSworkerource);
-        Memory.curSource += 1;
-        console.log(Memory.safeSources);
-        //if(Memory.curSource >= Memory.safeSources.length) {
-        //    Memory.curSource = 0;
-        //}
-        //target = Memory.safeSources[index];
-
-        spawn1.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming"});
-    }
-    else if(Memory.couriers < couriers) {
-        console.log("Spawning courier");
-        spawn1.createCreep(courierBody,undefined, {role:"courier"});
-    }
-    else if(Memory.transfers < transfers) {
-        console.log("Spawning Transfer");
-        var count = spawn1.room.find(FIND_MY_CREEPS, {filter:
-            function(object) {
-                if(object.memory.role =="transfer" && object.memory.task == "extension")
-                    return object;
-            }
-        });
-        var eCount = spawn1.room.find(FIND_MY_STRUCTURES, {filter:
-            function(object) {
-                return object.structureType == "extension";
-            }
-        });
-        var task;
-        if(count.length <= eCount.length*.5) {
-            task="extension"
+        else if (roomEnergy >= 700) {
+            workerBody = [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+            transferBody = [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE];
+            courierBody = [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE];
+            warriorBody = [TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE];
+            builderBody = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+        }
+        else if (roomEnergy >= 600) {
+            workerBody = [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE];
+            transferBody = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+            courierBody = [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE];
+            warriorBody = [TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE];
+            builderBody = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+        }
+        else if (roomEnergy >= 500) {
+            workerBody = [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE];
+            transferBody = [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
+            courierBody = [WORK, WORK, WORK, WORK, CARRY, MOVE];
+            warriorBody = [TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE];
+            builderBody = [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];
         }
         else {
-            task ="source";
+            workerBody = [WORK, CARRY, MOVE];
+            transferBody = [CARRY, MOVE, MOVE, MOVE];
+            courierBody = [CARRY, WORK, WORK, MOVE];
+            warriorBody = [ATTACK, ATTACK, MOVE, MOVE];
+            builderBody = [WORK, CARRY, MOVE, MOVE];
         }
-        spawn1.createCreep(transferBody,undefined, {role:"transfer", target:"none", task:task});
-    }
-    else if(Memory.builders < builders && (spawn1.room.find(FIND_CONSTRUCTION_SITES).length || spawn1.room.find(FIND_MY_STRUCTURES,{filter:function(object) { if(object.hits < object.hitsMax) return object; }}).length)) {
-        console.log("Spawning builder");
-        spawn1.createCreep(builderBody,undefined, {role:"builder"});
+
+        if(roomEnergy > 1100) {
+            workers = 3 * sSources + 2;
+            warriors = 18;
+            couriers = 3;
+            builders = 2;
+            transfers = workers + 4;
+        }
+        else if(roomEnergy > 1000) {
+            workers = 3 * sSources + 2;
+            warriors = 15;
+            couriers = 3;
+            builders = 2;
+            transfers = workers + 4;
+        }
+        else if(roomEnergy > 950) {
+            workers = 3 * sSources + 2;
+            warriors = 12;
+            couriers = 3;
+            builders = 2;
+            transfers = workers + 4;
+        }
+        else if(roomEnergy > 700) {
+            workers = 3 * sSources +2;
+            warriors = 5;
+            couriers = 3;
+            builders = 2;
+            transfers = workers + 4;
+            if(Tworkers > 6 && Ttransfers > 9 && Tcouriers > 2) {
+                warriors = 10;
+            }
+        }
+        else if(roomEnergy > 525) {
+            workers = 3 * sSources +1;
+            warriors = 2;
+            couriers = 3;
+            builders = 1;
+            transfers = workers + 2;
+        }
+        else if(roomEnergy > 450) {
+            warriors = 0;
+            workers = 3 * sSources;
+            builders = 1;
+            couriers = 1;
+            transfers = workers
+        }
+        else {
+            workers = 2 * sSources;
+            couriers = 1;
+            builders = 1;
+            transfers = workers
+        }
+
+
+        // SPAWN LOGIC
+        var spawns = room.find(FIND_MY_SPAWNS);
+        for(var spawn in spawns) {
+            if (null != spawn.spawning)
+                continue;
+
+
+            var target;
+            if (Twarriors < warriors) {
+                var flags = spawn.room.find(FIND_FLAGS, {filter: {color: COLOR_RED}});
+
+                for (var flag in flags) {
+                    var creeps = flag.room.find(FIND_MY_CREEPS, {filter: {role: "warrior", post: flag}});
+                    if (creeps.length < warriors / flags.length) {
+                        target = flag;
+                        break;
+                    }
+                }
+                console.log("Target: " + target + " Class: warrior");
+                spawn.createCreep(warriorBody, undefined, {role: "warrior", post: target, task: "waiting"})
+            }
+            else if (Tworkers < workers) {
+                var index = room.memory.curSource;
+                console.log(Memory.curSource);
+                console.log(workers);
+                console.log(Memory.workers);
+                console.log("Spawning worker for " + room.memory.curSource);
+                target = room.memory.safeSources[index];
+
+                var result = spawn.createCreep(workerBody, undefined, {role: "worker", target: target, task: "coming", home: spawn});
+                if(typeof(result) === 'string') {
+                    room.memory.curSource++;
+                    if(room.memory.curSource == room.memory.safeSources.length) {
+                        room.memory.curSource = 0;
+                    }
+                }
+            }
+            else if (Tcouriers < couriers) {
+                console.log("Spawning courier");
+                spawn.createCreep(courierBody, undefined, {role: "courier", home: spawn});
+            }
+            else if (Ttransfers < transfers) {
+                console.log("Spawning Transfer");
+                var count = spawn.room.find(FIND_MY_CREEPS, {
+                    filter: function (object) {
+                        if (object.memory.role == "transfer" && object.memory.task == "extension")
+                            return object;
+                    }
+                });
+                var eCount = spawn.room.find(FIND_MY_STRUCTURES, {
+                    filter: function (object) {
+                        return object.structureType == "extension";
+                    }
+                });
+                var task;
+                if (count.length <= eCount.length * .5) {
+                    task = "extension";
+                }
+                else {
+                    task = "source";
+                }
+                spawn.createCreep(transferBody, undefined, {role: "transfer", target: "none", task: task});
+            }
+            else if (Memory.builders < builders && (spawn1.room.find(FIND_CONSTRUCTION_SITES).length || spawn1.room.find(FIND_MY_STRUCTURES, {
+                    filter: function (object) {
+                        if (object.hits < object.hitsMax) return object;
+                    }
+                }).length)) {
+                console.log("Spawning builder");
+                spawn.createCreep(builderBody, undefined, {role: "builder"});
+            }
+        }
     }
 };
+
+function countType(room, type) {
+    var count = room.find(FIND_MY_CREEPS, {
+        filter: function(creep) {
+            if(creep.memory.role == type)
+                return true;
+            return false;
+        }
+    }).length;
+    return count;
+}
+
+function calculateRoomEnergy(room) {
+    var totalEnergy = 0;
+    room.find(FIND_MY_STRUCTURES< { filter: function(object) {
+            if(object.structureType == 'extension') {
+                totalEnergy += object.energy;
+            }
+        }});
+    var spawns = room.find(FIND_MY_SPAWNS);
+    for(var spawn in spawns) {
+        totalEnergy += spawn.energy;
+    }
+    return totalEnergy;
+}
+
+function getSafeSources(room) {
+    var sources = room.find(FIND_SOURCES);
+    var lairs = room.find(FIND_HOSTILE_STRUCTURES);
+    var count = 0;
+    for(var lair in lairs) {
+        var right = lair.pos.x + 6;
+        var bottom = lair.pos.y + 6;
+        var left = lair.pos.x - 6;
+        var top = lair.pos.y - 6;
+        var indices = lair.room.lookForAtArea('source', top, left, bottom, right);
+
+        var hit;
+        for(var x in indices) {
+            for(var y in indices[x]) {
+                var target = indices[x][y];
+                var index = sources.indexOf(target);
+                if(index > -1) {
+                    sources.splice(index, 1);
+                }
+            }
+            count++;
+        }
+        return sources;
+    }
+}

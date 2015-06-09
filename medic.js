@@ -1,6 +1,3 @@
-/**
- * Created by charles on 5/28/15.
- */
 /*
  * Module code goes here. Use 'module.exports' to export things:
  * module.exports = 'a thing';
@@ -10,7 +7,7 @@
  */
 module.exports = function(object)
 {
-    var attackFlag = Game.flags.Attack
+    var attackFlag = Game.flags.Attack;
     if(attackFlag && creep.room != Game.flags.Attack.room)
     {
         creep.moveTo(Game.flags.Attack);
@@ -27,7 +24,7 @@ module.exports = function(object)
         if(target) {
             creep.moveTo(target);
 
-            creep.attack(target);
+            creep.heal(target);
         }
         else
         {
@@ -47,8 +44,8 @@ module.exports = function(object)
             else
             {
 
-                var post = creep.memory.post
-                post = Game.getObjectById(post.id)
+                var post = creep.memory.post;
+                post = Game.getObjectById(post.id);
                 creep.moveTo(post)
             }
         }
@@ -57,4 +54,4 @@ module.exports = function(object)
     {
         creep.heal(creep);
     }
-}
+};
