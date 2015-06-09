@@ -11,8 +11,6 @@ module.exports = function()
         var roomEnergy = calculateRoomEnergy(room);
         room.memory.roomEnergy = roomEnergy;
 
-
-        var builders;
         var transfers;
         var couriers;
         var builders;
@@ -20,7 +18,6 @@ module.exports = function()
         var warriors;
         var medics;
 
-        var Tbuilders= countType(room,"builder");
         var Ttransfers= countType(room,"transfer");
         var Tcouriers= countType(room,"courier");
         var Tbuilders= countType(room,"builder");
@@ -31,44 +28,48 @@ module.exports = function()
         var sSources = room.memory.safeSources.length;
 
         //Bodies
-
+        var workerBody;
+        var transferBody;
+        var courierBody;
+        var warriorBody;
+        var builderBody;
         if(roomEnergy >= 900) {
-            var workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-            var transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
-            var courierBody = [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,WORK,MOVE,MOVE,MOVE];
-            var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
-            var builderBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+            transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+            courierBody = [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,WORK,MOVE,MOVE,MOVE];
+            warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+            builderBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
         else if(roomEnergy >= 700) {
-            var workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-            var transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
-            var courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,WORK,MOVE];
-            var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
-            var builderBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+            transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+            courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,WORK,MOVE];
+            warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
+            builderBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
         else if(roomEnergy >= 600) {
-            var workerBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
-            var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-            var courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE];
-            var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
-            var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            workerBody = [WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+            transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            courierBody = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE];
+            warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
+            builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
         else if(roomEnergy >= 500) {
-            var workerBody = [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
-            var transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-            var courierBody = [WORK,WORK,WORK,WORK,CARRY,MOVE];
-            var warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
-            var builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            workerBody = [WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
+            transferBody = [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+            courierBody = [WORK,WORK,WORK,WORK,CARRY,MOVE];
+            warriorBody = [TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE];
+            builderBody = [WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         }
         else {
-            var workerBody = [WORK,CARRY,MOVE];
-            var transferBody = [CARRY,MOVE,MOVE,MOVE];
-            var courierBody = [CARRY,WORK,WORK,MOVE];
-            var warriorBody = [ATTACK,ATTACK,MOVE,MOVE];
-            var builderBody = [WORK,CARRY,MOVE,MOVE];
+            workerBody = [WORK,CARRY,MOVE];
+            transferBody = [CARRY,MOVE,MOVE,MOVE];
+            courierBody = [CARRY,WORK,WORK,MOVE];
+            warriorBody = [ATTACK,ATTACK,MOVE,MOVE];
+            builderBody = [WORK,CARRY,MOVE,MOVE];
         }
 
-        if(roomEnergy > 1100) {
+        if(roomEnergy > 1300) {
             workers = 3 * sSources + 2;
             warriors = 18;
             couriers = 3;
@@ -192,7 +193,7 @@ module.exports = function()
 
 
 
-}
+};
 
 function countType(room,type){
     var count = room.find(FIND_MY_CREEPS, {
