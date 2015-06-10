@@ -15,6 +15,8 @@ module.exports = function(creep){
     }
     else{
         var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+        console.log(targets);
+        console.log(targets.length);
         if(targets.length) {
             creep.moveTo(targets[0]);
             creep.build(targets[0]);
