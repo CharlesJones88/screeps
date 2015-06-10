@@ -2,7 +2,7 @@ module.exports = function()
 {
     for(var room in Memory.rooms) {
         room = Game.rooms[room];
-
+console.log('running spawn code');
         if(room == undefined)continue;
         if(room.memory.safeSources == undefined) {
             room.memory.safeSources = getSafeSources(room);
@@ -100,7 +100,7 @@ module.exports = function()
             warriors = 5;
             couriers = 3;
             builders = 2;
-            transfers = workers+4;
+            transfers = workers + 4;
             if(Tworkers > 6 && Ttransfers > 9 && Tcouriers > 2) {
                 warriors = 10;
             }
@@ -132,7 +132,7 @@ module.exports = function()
         var spawns = room.find(FIND_MY_SPAWNS);
         for(var spawn in spawns) {
             var spawn = spawns[spawn];
-            if(spawn.spawning != null )
+            if(spawn.spawning != null)
                 continue;
 
             if(Tworkers < workers ) {
