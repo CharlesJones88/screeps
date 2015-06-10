@@ -2,7 +2,6 @@ module.exports = function()
 {
     for(var room in Memory.rooms) {
         room = Game.rooms[room];
-console.log('running spawn code');
         if(room == undefined)continue;
         if(room.memory.safeSources == undefined) {
             room.memory.safeSources = getSafeSources(room);

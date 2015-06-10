@@ -3,7 +3,7 @@
  */
 var courier = require("courier");
 var builder = require("builder");
-var spawn = require("spawn");
+var spawn = require("spawn1");
 var worker = require("worker");
 var transfer = require("transfer");
 var warrior = require("warrior");
@@ -20,8 +20,8 @@ var totJanitor = 0;
 Memory.totalEnergy = 0;
 Memory.energyCapacity = 0;
 
-var spawn = Game.spawns.Spawn1;
-Memory.totalEnergy += spawn.energy;
+var spawn1 = Game.spawns.Spawn1;
+Memory.totalEnergy += spawn1.energy;
 //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
 var totalEnergy = Game.spawns.Spawn1.room.find(FIND_MY_STRUCTURES,
     {

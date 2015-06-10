@@ -41,8 +41,8 @@ module.exports = function (creep) {
      {
      if(creep.energy == 0 )
      {
-     creep.moveTo(spawn);
-     spawn.transferEnergy(creep);
+     creep.moveTo(spawn1);
+     spawn1.transferEnergy(creep);
      }
      else
      {
