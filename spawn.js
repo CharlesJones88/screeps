@@ -131,7 +131,7 @@ module.exports = function()
 
             if(Tworkers < workers ) {
                 var index = room.memory.curSource;
-                console.log("Spawning worker for " + room.memory.curSource);
+                console.log("Spawning worker");
                 var target = room.memory.safeSources[index];
                 var result = spawn.createCreep(workerBody,undefined, {role:"worker", target:target, task:"coming", home:spawn});
                 if(typeof(result === 'string')) {
