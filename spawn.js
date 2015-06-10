@@ -117,14 +117,14 @@ module.exports = function()
             workers = 3 * sSources;
             builders = 1;
             couriers = 1;
-            janitor = 1;
+            janitors = 1;
             transfers = workers;
         }
         else {
             workers = 3 * sSources;
             couriers = 1;
             builders = 2;
-            janitor = 1;
+            janitors = 1;
             transfers = workers;
         }
 
