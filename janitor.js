@@ -10,7 +10,6 @@
  */
 module.exports = function(creep) {
     var spawn = creep.memory.home;
-    spawn = Game.getObjectById(spawn.id);
     var sources = creep.memory.target;
     var target;
     if(creep.energy < creep.energyCapacity) {
