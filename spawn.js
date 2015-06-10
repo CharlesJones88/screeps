@@ -33,6 +33,7 @@ module.exports = function()
         var courierBody;
         var warriorBody;
         var builderBody;
+
         if(roomEnergy >= 900) {
             workerBody = [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
             transferBody = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
@@ -75,7 +76,6 @@ module.exports = function()
             couriers = 3;
             builders = 2;
             transfers = workers+4;
-
         }
         else if(roomEnergy > 1100) {
             workers = 3 * sSources + 2;
@@ -83,7 +83,6 @@ module.exports = function()
             couriers = 3;
             builders = 2;
             transfers = workers+4;
-
         }
         else if(roomEnergy > 950) {
             workers = 3 * sSources + 2;
@@ -91,7 +90,6 @@ module.exports = function()
             couriers = 3;
             builders = 2;
             transfers = workers + 4;
-
         }
         else if(roomEnergy > 700) {
             workers = 3 * sSources + 2;
@@ -117,8 +115,7 @@ module.exports = function()
             couriers = 1;
             transfers = workers;
         }
-        else
-        {
+        else {
             workers = 3 * sSources;
             couriers = 1;
             builders = 1;
@@ -127,8 +124,7 @@ module.exports = function()
 
 //SPAWN LOGIC
         var spawns = room.find(FIND_MY_SPAWNS);
-        for(var spawn in spawns)
-        {
+        for(var spawn in spawns) {
             var spawn = spawns[spawn];
             if(spawn.spawning != null )
                 continue;
