@@ -118,7 +118,7 @@ module.exports = function()
         else {
             workers = 3 * sSources;
             couriers = 1;
-            builders = 1;
+            builders = 2;
             transfers = workers;
         }
 
