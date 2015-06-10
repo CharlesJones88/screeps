@@ -1,35 +1,30 @@
-module.exports = function (creep) {
+/**
+ * Created by charles on 6/10/15.
+ */
+/*
+ * Module code goes here. Use 'module.exports' to export things:
+ * module.exports = 'a thing';
+ *
+ * You can import it from another modules like this:
+ * var mod = require('janitor'); // -> 'a thing'
+ */
+module.exports = function(creep) {
     var spawn = creep.memory.home;
     spawn = Game.getObjectById(spawn.id);
     var sources = creep.memory.target;
-    if(sources == undefined || sources == 1) {
-        sources = creep.pos.findClosest(FIND_SOURCES);
-    }
-    else {
-        var sources = creep.memory.target;
-        sources = Game.getObjectById(sources["id"])
-    }
-
+    var target;
     if(creep.energy < creep.energyCapacity) {
-        creep.moveTo(sources);
-        creep.memory.task = "working";
-        creep.harvest(sources);
-        var transfer = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
-            function(object){
-                if(object.memory.role =="transfer" && object.memory.target == "none")
-                    return object;
-            }});
+        target = creep.pos.findClosest(FIND_DROPPED_ENERGY);
+        if(target) {
+            creep.moveTo(target);
+            creep.pickup(target);
+        }
         if(creep.pos.isNearTo(transfer))
             creep.transferEnergy(transfer);
     }
     else {
-        var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"});
-        for(var x in nearby) {
-            nearby[x].move(TOP_RIGHT);
-        }
-
         if(creep.memory.task == "meeting") {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
+            target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
                 function(object){
                     if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}});
 
@@ -42,7 +37,7 @@ module.exports = function (creep) {
             }
         }
         else {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
+            target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
                 function(object){
                     if(object.memory.role =="transfer" && object.memory.target.id == creep.id)return object;}});
             if(target != undefined && target != null) {
@@ -54,3 +49,4 @@ module.exports = function (creep) {
         }
     }
 };
+

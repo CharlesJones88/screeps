@@ -16,6 +16,7 @@ module.exports = function()
         var builders;
         var workers;
         var warriors;
+        var janitors;
         var medics;
 
         var Ttransfers= countType(room,"transfer");
@@ -23,6 +24,7 @@ module.exports = function()
         var Tbuilders= countType(room,"builder");
         var Tworkers= countType(room,"worker");
         var Twarriors= countType(room,"warrior");
+        var Tjanitors = countType(room, "janitor");
         var Tmedics= countType(room,"medic");
 
         var sSources = room.memory.safeSources.length;
@@ -32,6 +34,7 @@ module.exports = function()
         var transferBody;
         var courierBody;
         var warriorBody;
+        var janitorBody;
         var builderBody;
 
         if(roomEnergy >= 900) {
@@ -68,6 +71,7 @@ module.exports = function()
             courierBody = [CARRY,WORK,WORK,MOVE];
             warriorBody = [ATTACK,ATTACK,MOVE,MOVE];
             builderBody = [WORK,CARRY,MOVE,MOVE];
+            janitorBody = [CARRY,CARRY,MOVE,MOVE];
         }
 
         if(roomEnergy > 1300) {
@@ -75,14 +79,14 @@ module.exports = function()
             warriors = 18;
             couriers = 3;
             builders = 2;
-            transfers = workers+4;
+            transfers = workers + 4;
         }
         else if(roomEnergy > 1100) {
             workers = 3 * sSources + 2;
             warriors = 15;
             couriers = 3;
             builders = 2;
-            transfers = workers+4;
+            transfers = workers + 4;
         }
         else if(roomEnergy > 950) {
             workers = 3 * sSources + 2;
@@ -113,12 +117,14 @@ module.exports = function()
             workers = 3 * sSources;
             builders = 1;
             couriers = 1;
+            janitor = 1;
             transfers = workers;
         }
         else {
             workers = 3 * sSources;
             couriers = 1;
             builders = 2;
+            janitor = 1;
             transfers = workers;
         }
 
@@ -167,13 +173,17 @@ module.exports = function()
                 console.log("Creating warrior for " + target.name);
                 spawn.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting",target:"none"})
             }
-            else if(Tcouriers < couriers){
+            else if(Tcouriers < couriers) {
                 console.log("Spawning courier");
                 spawn.createCreep(courierBody,undefined, {role:"courier",home:spawn});
             }
-            else if(Tbuilders < builders && (spawn.room.find(FIND_CONSTRUCTION_SITES).length) || roomEnergy >= 700){
+            else if(Tbuilders < builders && (spawn.room.find(FIND_CONSTRUCTION_SITES).length) || roomEnergy >= 700) {
                 console.log("Spawning builder");
                 spawn.createCreep(builderBody,undefined, {role:"builder"});
+            }
+            else if(Tjanitors < janitors) {
+                console.log("Spawning janirot");
+                spawn.createCreep(janitorBody, undefined, {role:"janitor"});
             }
         }
     }
