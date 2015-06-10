@@ -181,8 +181,8 @@ module.exports = function()
                 spawn.createCreep(builderBody,undefined, {role:"builder"});
             }
             else if(Tjanitors < janitors) {
-                console.log("Spawning janirot");
-                spawn.createCreep(janitorBody, undefined, {role:"janitor"});
+                console.log("Spawning janitor");
+                spawn.createCreep(janitorBody, undefined, {role:"janitor",home:spawn});
             }
         }
     }
