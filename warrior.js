@@ -4,51 +4,38 @@
 module.exports = function(creep)
 {
     var attackFlag = Game.flags.Attack;
-    if(attackFlag && creep.room != Game.flags.Attack.room)
-    {
+    if(attackFlag && creep.room != Game.flags.Attack.room) {
         creep.moveTo(Game.flags.Attack);
         console.log("Moving To Attack Flag")
     }
-    else
-    {
+    else {
         var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-            if(object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
-            {
+            if(object.owner.username != "Source Keeper")
                 return object;
-            }
         }});
         if(target) {
             creep.moveTo(target);
             console.log("Move to hostile creep");
             creep.attack(target);
         }
-        else
-        {
+        else {
             var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
-
-                if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
-                {
+                if(object.owner != undefined && object.owner.username != "Source Keeper")
                     return object;
-                }
             }});
-            if(target)
-            {
+            if(target) {
                 creep.moveTo(target);
                 console.log("warrior move to target");
                 creep.attack(target);
             }
-            else
-            {
-
-                var post = creep.memory.post;
-                //post = Game.getObjectById(post.id);
-                creep.moveTo(post);
-                console.log("warrior move to post");
+            else {
+                var post = Game.flags.sRally;
+                creep.moveTo(post.pos);
+                console.log("warrior move to " + post.name);
             }
         }
     }
-    if(creep.energy < creep.energyCapacity)
-    {
+    if(creep.energy < creep.energyCapacity) {
         creep.heal(creep);
     }
 };
