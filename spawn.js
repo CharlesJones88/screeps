@@ -119,60 +119,55 @@ module.exports = function()
         }
         else
         {
-            workers =2 * sSources;
+            workers = 3 * sSources;
             couriers = 1;
             builders = 1;
             transfers = workers;
         }
-//SPAWN LOGIC
 
+//SPAWN LOGIC
         var spawns = room.find(FIND_MY_SPAWNS);
         for(var spawn in spawns)
         {
             var spawn = spawns[spawn];
-            if(spawn.spawning != null )continue;
+            if(spawn.spawning != null )
+                continue;
 
-
-
-            if(Tworkers < workers ){
+            if(Tworkers < workers ) {
                 var index = room.memory.curSource;
                 console.log("Spawning worker for " + room.memory.curSource);
-
                 var target = room.memory.safeSources[index];
-                var result = spawn.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming",home:spawn});
-                if(typeof(result == 'string')){
+                var result = spawn.createCreep(workerBody,undefined, {role:"worker", target:target, task:"coming", home:spawn});
+                if(typeof(result === 'string')) {
                     room.memory.curSource++;
                     if(room.memory.curSource == room.memory.safeSources.length){room.memory.curSource = 0}
                 }
             }
-
-            else if(Ttransfers < transfers){
+            else if(Ttransfers < transfers) {
                 console.log("Spawning Transfer");
                 var count = spawn.room.find(FIND_MY_CREEPS, {filter:
-                    function(object){
-                        if(object.memory.role =="transfer" && object.memory.task == "extension")return object;}});
+                    function(object) {
+                        if(object.memory.role =="transfer" && object.memory.task == "extension")
+                            return object;}});
                 var eCount = spawn.room.find(FIND_MY_STRUCTURES, {filter:
                     function(object){
-                        return object.structureType == "extension"
-
-                    }})
-                if(count.length <= eCount.length*.5){var task="extension"}
-                else{var task ="source"}
+                        return object.structureType = "extension";
+                    }});
+                if(count.length <= eCount.length*.5)
+                    var task = "extension";
+                else
+                    var task ="source";
                 spawn.createCreep(transferBody,undefined, {role:"transfer", target:"none", task:task,home:spawn});
             }
-            else if(Twarriors < warriors)
-            {
+            else if(Twarriors < warriors) {
                 var flags = spawn.room.find(FIND_FLAGS, {filter:{color:COLOR_RED}});
-
                 //TODO: ADD ERROR HANDLING HERE FOR NO FLAG
                 var target;
-                for(var flag in flags)
-                {
+                for(var flag in flags) {
                     flag = flags[flag];
                     var creeps = flag.room.find(FIND_MY_CREEPS, {filter:{role:"warrior",post: flag}});
                     if(creeps.length < warriors/flags.length){target = flag; break;}
                 }
-
                 console.log("Creating warrior for " + target.name);
                 spawn.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting",target:"none"})
             }
@@ -180,19 +175,12 @@ module.exports = function()
                 console.log("Spawning courier");
                 spawn.createCreep(courierBody,undefined, {role:"courier",home:spawn});
             }
-
-
-
             else if(Tbuilders < builders && (spawn.room.find(FIND_CONSTRUCTION_SITES).length) || roomEnergy >= 700){
                 console.log("Spawning builder");
                 spawn.createCreep(builderBody,undefined, {role:"builder"});
             }
         }
-
     }
-
-
-
 };
 
 function countType(room,type){
@@ -206,16 +194,15 @@ function countType(room,type){
     }).length;
     return count;
 }
+
 function calculateRoomEnergy(room)
 {
-
     var totalEnergy = 0;
-    room.find(FIND_MY_STRUCTURES, {filter:function(object){
+    room.find(FIND_MY_STRUCTURES, {filter:function(object) {
         if(object.structureType == "extension"){totalEnergy += object.energy}
     }});
     var spawns = room.find(FIND_MY_SPAWNS);
-    for(var spawn in spawns )
-    {
+    for(var spawn in spawns ) {
         spawn = spawns[spawn];
         totalEnergy += spawn.energy;
     }
