@@ -3,7 +3,7 @@
  */
 var courier = require("courier");
 var builder = require("builder");
-var spawn = require("spawn1");
+var spawn = require("spawn");
 var worker = require("worker");
 var transfer = require("transfer");
 var warrior = require("warrior");
