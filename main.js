@@ -65,10 +65,6 @@ for(var name in Game.creeps) {
         harvester(creep);
         totHarvesters++;
     }
-    else if(creep.memory.role == 'janitor') {
-        janitor(creep);
-        totJanitor++;
-    }
 }
 
 //MemoryAssignment
