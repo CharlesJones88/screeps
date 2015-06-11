@@ -17,6 +17,7 @@ module.exports = function(creep)
             creep.moveTo(target);
             console.log("Move to hostile creep");
             creep.attack(target);
+            creep.memory.task = 'attacking'
         }
         else {
             var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
@@ -28,10 +29,11 @@ module.exports = function(creep)
                 console.log("warrior move to target");
                 creep.attack(target);
             }
-            else {
+            else if (creep.pos.findInRange(Game.flags.sRally, 3) && creep.memory.task != "moving") {
                 var post = Game.flags.sRally;
                 creep.moveTo(post.pos);
                 console.log("warrior move to " + post.name);
+                creep.memory.task = "moving";
             }
         }
     }
