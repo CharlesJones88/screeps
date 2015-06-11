@@ -1,6 +1,3 @@
-/**
- * Created by charlesjones on 5/26/15.
- */
 /*
  * Module code goes here. Use 'module.exports' to export things:
  * module.exports = 'a thing';
@@ -8,36 +5,56 @@
  * You can import it from another modules like this:
  * var mod = require('builder'); // -> 'a thing'
  */
-module.exports = function(creep){
+module.exports = function(creep) {
+    var spawn = creep.memory.home;
+    spawn = Game.getObjectById(spawn.id);
+
+    var target;
+    if(creep.memory.target == "none") {
+        target = getTarget(creep,creep.memory.task);
+    }
+    target = Game.getObjectById(creep.memory.target.id);
+
     if(creep.energy == 0 && Memory.workers > 1 && Memory.transfers > 1 ) {
-        creep.moveTo(Game.spawns.Spawn1);
-        Game.spawns.Spawn1.transferEnergy(creep);
+        creep.moveTo(spawn);
+        spawn.transferEnergy(creep);
     }
-    else if(Game.flags.bMove != undefined)
-    {
-        creep.moveTo(Game.flags.bMove);
+    else if(creep.memory.target != 'none' && creep.memory.task != 'construction') {
+        creep.moveTo(target);
+        creep.build(target);
+        if(target.progress >= target.progressTotal)creep.memory.target = "none";
     }
-    else{
-        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+    else if(creep.memory.target != 'none' && creep.memory.task == "construction") {
+
+    }
+    else if(Game.flags.bMove != undefined) {
+        var targets = Game.flags.bMove.room.find(FIND_CONSTRUCTION_SITES);
         if(targets.length) {
             creep.moveTo(targets[0]);
             creep.build(targets[0]);
         }
-        else{
-            if(creep.memory.target == "none" || creep.memory.target == undefined) {
-                targets = creep.room.find(FIND_MY_STRUCTURES, {filter: function(object) {
-                    if(object.hits < object.hitsMax *.5)
-                        return object;
-                }});
-                creep.memory.target = targets[0];
-            }
-            else {
-                var target = creep.memory.target;
-                creep.moveTo(target);
-                creep.repair(target);
-                if(target.hits == target.hitsMax)
-                    creep.memory.target = "none";
-            }
-        }
     }
-};
+}
+
+function getTarget(creep,task) {
+    var target;
+    if(task == "construction") {
+        target = creep.room.find(FIND_CONSTRUCTION_SITES);
+    }
+    if(task == "roads" || target == 'undefined') {
+        targets = creep.room.find(FIND_STRUCTURES, {filter: function(object) {
+            if(object.hits < object.hitsMax*.5 && object.structureType == STRUCTURE_ROAD)return object;
+        }})
+    }
+    if(task == "roads"|| target.length==0) {
+        targets = creep.room.find(FIND_STRUCTURES, {filter: function(object) {
+            if(object.hits < object.hitsMax*.5 && object.structureType == STRUCTURE_ROAD)return object;
+        }})
+    }
+    if(task == "ramparts"|| target.length==0) {
+        targets = creep.room.find(FIND_STRUCTURES, {filter: function(object) {
+            if(object.hits < 1000000 && (object.structureType == STRUCTURE_RAMPART || object.structureType == STRUCTURE_WALL))return object;
+        }})
+    }
+    return target[0];
+}
