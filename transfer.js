@@ -5,7 +5,6 @@ module.exports = function(creep)
 {
     var spawn = Game.spawns.Spawn1;
 
-
     if(creep.energy < .45*creep.energyCapacity)
     {
         var target;
@@ -17,15 +16,12 @@ module.exports = function(creep)
             {
                 creep.memory.target = target;
                 target.memory.task = "meeting";
-
             }
             else
             {
                 target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object){if(object.memory.role =="worker" && object.memory.task == "working")return object;}});
                 creep.moveTo(target);
             }
-
-
         }
         else
         {
@@ -47,11 +43,7 @@ module.exports = function(creep)
             {
                 creep.memory.target = "none";
             }
-
         }
-
-
-
     }
     else
     {

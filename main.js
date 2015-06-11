@@ -8,14 +8,12 @@ var worker = require("worker");
 var transfer = require("transfer");
 var warrior = require("warrior");
 var construct = require("construct");
-var janitor = require("janitor");
 var totCouriers = 0;
 var totBuilders = 0;
 var totTransfer = 0;
 var totHarvesters = 0;
 var totWorkers = 0;
 var totWarriors = 0;
-var totJanitor = 0;
 
 Memory.totalEnergy = 0;
 Memory.energyCapacity = 0;
