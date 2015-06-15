@@ -1,12 +1,11 @@
-/**
- * Created by charlesjones on 5/26/15.
- */
 module.exports = function (creep) {
-    var sources = creep.memory.target;
-    if(sources == undefined || sources == 1) {
-        sources = creep.room.find(FIND_SOURCES);
+    var sources = creep.memory.target
+    if(sources == undefined || sources == 1)
+    {
+        sources = creep.pos.findClosest(FIND_SOURCES)
     }
-    else {
+    else
+    {
         sources = Game.getObjectById(sources["id"])
     }
     //var sources = Game.getObjectById(creep.memory.target["id"]);
@@ -19,11 +18,16 @@ module.exports = function (creep) {
     }
     else {
         creep.memory.task = "going";
-        var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"});
-        for(var x in nearby) {
+        var nearby = creep.pos.findInRange(FIND_MY_CREEPS,1,{task:"coming"})
+        for(var x in nearby)
+        {
             nearby[x].move(TOP_RIGHT);
         }
         creep.moveTo(Game.spawns.Spawn1);
-        creep.transferEnergy(Game.spawns.Spawn1);
+
+        creep.transferEnergy(Game.spawns.Spawn1)
+
     }
-};
+
+
+}

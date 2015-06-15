@@ -1,43 +1,59 @@
-/**
- * Created by charlesjones on 5/26/15.
- */
 module.exports = function(creep)
 {
-    var attackFlag = Game.flags.Attack;
-    if(attackFlag && creep.room != Game.flags.Attack.room) {
+    var attackFlag = Game.flags.Attack
+    var moveFlag = Game.flags.Move
+    if(attackFlag && creep.room != Game.flags.Attack.room)
+    {
         creep.moveTo(Game.flags.Attack);
         console.log("Moving To Attack Flag")
     }
-    else {
+    else if(moveFlag)
+    {
+        creep.moveTo(Game.flags.Move)
+    }
+    else
+    {
         var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-            if(object.owner.username != "Source Keeper")
+            if(object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
+            {
                 return object;
+            }
         }});
         if(target) {
             creep.moveTo(target);
-            console.log("Move to hostile creep");
+
             creep.attack(target);
-            creep.memory.task = 'attacking'
         }
-        else {
+        else
+        {
             var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
-                if(object.owner != undefined && object.owner.username != "Source Keeper")
+
+                if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
+                {
                     return object;
+                }
             }});
-            if(target) {
+            if(target)
+            {
                 creep.moveTo(target);
-                console.log("warrior move to target");
                 creep.attack(target);
+
             }
-            else if (creep.pos.findInRange(Game.flags.sRally, 3) && creep.memory.task != "moving") {
-                var post = Game.flags.sRally;
-                creep.moveTo(post.pos);
-                console.log("warrior move to " + post.name);
-                creep.memory.task = "moving";
+            else
+            {
+
+                var post = creep.memory.post
+                if(post == undefined)
+                {
+                    post = creep.pos.findClosest(FIND_FLAGS,{filter:{color:COLOR_RED}})
+                }
+                post = Game.getObjectById(post.id)
+                creep.moveTo(post)
             }
         }
     }
-    if(creep.energy < creep.energyCapacity) {
+    if(creep.energy < creep.energyCapacity)
+    {
         creep.heal(creep);
     }
-};
+}

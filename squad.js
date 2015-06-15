@@ -1,10 +1,7 @@
-/**
- * Created by charlesjones on 6/11/15.
- */
-var medic = require("squadMedic");
-var melee = require("squadMelee");
-var ranged = require("squadRanged");
-module.exports = function(creep) {
+var medic = require("squadMedic")
+var melee = require("squadMelee")
+var ranged = require("squadRanged")
+module.exports = function(creep){
 
     //ASSIGN FLAG TO CREEP
     /* Flags:
@@ -24,11 +21,11 @@ module.exports = function(creep) {
     var flags = Game.flags;
     var task = creep.memory.task;
     var squadFlag = [];
-    for(var gflag in flags) {
+    for(var gflag in flags){
 
-        if(gflag.substr(0,gflag.indexOf('-')) == creep.memory.squad) {
+        if(gflag.substr(0,gflag.indexOf('-')) == creep.memory.squad){
             //Check color
-            gflag = Game.flags[gflag];
+            gflag = Game.flags[gflag]
 
             if(flag == undefined)flag = gflag;
             if(gflag.color == COLOR_CYAN)
@@ -51,17 +48,17 @@ module.exports = function(creep) {
             else if(gflag.color == COLOR_WHITE && flag.color != COLOR_CYAN
                 && flag.color != COLOR_RED
                 && flag.color != COLOR_YELLOW
-                && flag.color != COLOR_GREY) {
+                && flag.color != COLOR_GREY){
                 flag = gflag;
             }
-            else if(gflag.color == COLOR_BLUE) {
+            else if(gflag.color == COLOR_BLUE){
+
                 flag = gflag;
             }
 
         }
     }
 
-    console.log(flag.name);
     //Role performance
     if(creep.memory.task == "melee"){
         melee(creep,flag)
@@ -72,4 +69,6 @@ module.exports = function(creep) {
     else if(creep.memory.task == "medic"){
         medic(creep,flag)
     }
-};
+
+
+}

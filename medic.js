@@ -7,7 +7,7 @@
  */
 module.exports = function(object)
 {
-    var attackFlag = Game.flags.Attack;
+    var attackFlag = Game.flags.Attack
     if(attackFlag && creep.room != Game.flags.Attack.room)
     {
         creep.moveTo(Game.flags.Attack);
@@ -44,8 +44,8 @@ module.exports = function(object)
             else
             {
 
-                var post = creep.memory.post;
-                post = Game.getObjectById(post.id);
+                var post = creep.memory.post
+                post = Game.getObjectById(post.id)
                 creep.moveTo(post)
             }
         }
@@ -54,4 +54,4 @@ module.exports = function(object)
     {
         creep.heal(creep);
     }
-};
+}
