@@ -1,4 +1,5 @@
 module.exports = function (creep) {
+    //var x = Game.flags.bMove.room.lookAt(23,45);
     var spawn = creep.memory.home
     spawn = Game.getObjectById(spawn.id)
     var sources = creep.memory.target
@@ -13,7 +14,7 @@ module.exports = function (creep) {
     }
 
     if(creep.energy < creep.energyCapacity) {
-
+        //console.log(JSON.stringify(x[0]));
         creep.moveTo(sources);
         creep.memory.task = "working";
         creep.harvest(sources);

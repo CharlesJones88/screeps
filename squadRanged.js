@@ -28,7 +28,7 @@ module.exports = function(creep, flag){
 }
 function rally(creep,flag){
 	var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-		if(object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
+		if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2")
 		{
 			return object;
 		}
@@ -57,7 +57,7 @@ function attack(creep,flag){
 	else
 	{
 		var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-			if(object.owner.username != "Source Keeper" /*&& object.owner.username != "nuclearfalcon"*/)
+			if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2")
 			{
 				return object;
 			}
@@ -67,25 +67,21 @@ function attack(creep,flag){
 			creep.moveTo(target);
 			creep.rangedAttack(target);
 		}
-		else
-		{
+		else {
 			var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
 
-				if(object.owner != undefined && object.owner.username != "Source Keeper" /*&& object.owner.username != "nuclearfalcon"*/)
-				{
+				if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "hesto2" && object.structureType != STRUCTURE_CONTROLLER) {
 					return object;
 				}
 			}});
-			if(target)
-			{
+			if(target) {
 				creep.moveTo(target);
 				creep.rangedAttack(target);
 
 			}
-			else
-			{
+			else {
 
-				creep.moveTo(flag)
+				creep.moveTo(flag);
 			}
 		}
 	}

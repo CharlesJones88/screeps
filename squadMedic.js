@@ -37,13 +37,13 @@ function rally(creep,flag){
 		}
 	}});
 	if(target == undefined || creep.memory.target == "none"){
-		creep.moveTo(flag)
-		creep.memory.target = "none"
+		creep.moveTo(flag);
+		creep.memory.target = "none";
 		if(creep.hits < creep.hitsMax)creep.heal(creep)
 	}
 	else{
 
-		creep.moveTo(target)
+		creep.moveTo(target);
 		creep.heal(target);
 	}
 }

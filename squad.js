@@ -1,6 +1,6 @@
-var medic = require("squadMedic")
-var melee = require("squadMelee")
-var ranged = require("squadRanged")
+var medic = require("squadMedic");
+var melee = require("squadMelee");
+var ranged = require("squadRanged");
 module.exports = function(creep){
 
     //ASSIGN FLAG TO CREEP
@@ -25,7 +25,7 @@ module.exports = function(creep){
 
         if(gflag.substr(0,gflag.indexOf('-')) == creep.memory.squad){
             //Check color
-            gflag = Game.flags[gflag]
+            gflag = Game.flags[gflag];
 
             if(flag == undefined)flag = gflag;
             if(gflag.color == COLOR_CYAN)
