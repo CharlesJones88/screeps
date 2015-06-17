@@ -171,7 +171,7 @@ module.exports = function()
                 //couriers = 0;
             }
         }
-
+        warriors = 0;
         var links = room.find(FIND_MY_STRUCTURES, {filter:{structureType:STRUCTURE_LINK}});
         if(links.length > 1)
         {
@@ -182,8 +182,6 @@ module.exports = function()
             }
             else
                 linkWorkers = 0;
-
-
             doLinks(links);
         }
 

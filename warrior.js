@@ -42,13 +42,14 @@ module.exports = function(creep)
             else
             {
 
-                var post = creep.memory.post
+                var post = creep.memory.post;
+                console.log(post);
                 if(post == undefined)
                 {
                     post = creep.pos.findClosest(FIND_FLAGS,{filter:{color:COLOR_RED}})
                 }
-                post = Game.getObjectById(post.id)
-                creep.moveTo(post)
+                //post = Game.getObjectById(post.id);
+                creep.moveTo(post);
             }
         }
     }
