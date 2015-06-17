@@ -6,7 +6,7 @@ var transfer = require("transfer");
 var warrior = require("warrior");
 var construct = require("construct");
 var squad = require("squad");
-//var keeperKiller = require("keeperKiller");
+var keeperKiller = require("keeperKiller");
 var kMedic = require("kMedic");
 var linkWorker = require("linkWorker");
 for(var i in Memory.creeps) {
