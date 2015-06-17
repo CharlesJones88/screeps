@@ -257,7 +257,7 @@ module.exports = function()
                     var creeps = flag.room.find(FIND_MY_CREEPS, {filter:{role:"warrior",post: flag}});
                     if(creeps.length < warriors/flags.length){target = flag; break;}
                 }
-                console.log("Creating warrior for " + target.name);
+                console.log("Creating warrior for " + target);
                 spawn.createCreep(warriorBody,undefined,{role:"warrior",post:target,task:"waiting",target:"none"})
             }
             else if(Tcouriers < couriers) {
