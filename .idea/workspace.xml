@@ -97,8 +97,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38977367">
-              <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
+            <state vertical-scroll-proportion="0.69823974">
+              <caret line="138" column="4" selection-start-line="138" selection-start-column="4" selection-end-line="138" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -472,7 +472,13 @@
       <option name="project" value="LOCAL" />
       <updated>1435357168632</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Added nomad logic to main">
+      <created>1435357528089</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1435357528089</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -531,7 +537,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Made some fixes to the harvester" />
     <MESSAGE value="Adding initial to main" />
     <MESSAGE value="Fixing issue with harvesters" />
     <MESSAGE value="Fixing issue with harvesters part 2" />
@@ -556,7 +561,8 @@
     <MESSAGE value="Fixed issues with main code and transfer" />
     <MESSAGE value="Fix for creep home name" />
     <MESSAGE value="Fix naming issue with spawn" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix naming issue with spawn" />
+    <MESSAGE value="Added nomad logic to main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added nomad logic to main" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -994,8 +1000,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38977367">
-          <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
+        <state vertical-scroll-proportion="0.69823974">
+          <caret line="138" column="4" selection-start-line="138" selection-start-column="4" selection-end-line="138" selection-end-column="4" />
           <folding />
         </state>
       </provider>

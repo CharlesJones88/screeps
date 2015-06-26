@@ -16,13 +16,14 @@ for(var i in Memory.creeps) {
         delete Memory.creeps[i];
     }
 }
-    var totCouriers=0;
-    var totHarvesters=0;
+    var totCouriers = 0;
+    var totHarvesters = 0;
     var totBuilders = 0;
-    var totJanitors=0;
+    var totJanitors = 0;
     var totTransfer = 0;
-    var totWorkers =0;
-    var totWarriors=0;
+    var totWorkers = 0;
+    var totWarriors = 0;
+    var totNomads = 0;
     Memory.totalEnergy = 0;
     Memory.energyCapacity = 0;
     var spawns = Game.spawns;
