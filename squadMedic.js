@@ -4,7 +4,7 @@ module.exports = function(creep, flag){
 		rally(creep,flag)
 	}
 	else if(flag.color == COLOR_RED){
-		rally(creep,flag)
+        rally(creep,flag)
 	}
 	else if(flag.color == COLOR_YELLOW){
 
@@ -30,20 +30,20 @@ module.exports = function(creep, flag){
 
 function rally(creep,flag){
 	var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object){
-		if(object.memory.squad == creep.memory.squad && object.hits < object.hitsMax && object != creep)
-		{
-			creep.memory.target = object;
-			return object;
+			if(object.memory.squad == creep.memory.squad && object.hits < object.hitsMax && object != creep)
+			{
+			        creep.memory.target = object;
+					return object;
+			}
+		}});
+		if(target == undefined || creep.memory.target == "none"){
+			creep.moveTo(flag)
+			creep.memory.target = "none"
+			if(creep.hits < creep.hitsMax)creep.heal(creep)
 		}
-	}});
-	if(target == undefined || creep.memory.target == "none"){
-		creep.moveTo(flag)
-		creep.memory.target = "none"
-		if(creep.hits < creep.hitsMax)creep.heal(creep)
-	}
-	else{
+		else{
 
-		creep.moveTo(target)
-		creep.heal(target);
-	}
+			creep.moveTo(target)
+			creep.heal(target);
+		}
 }

@@ -1,16 +1,13 @@
-/**
- * Created by charlesjones on 6/15/15.
- */
 
 
 module.exports = function (creeps)
 {
-    var courier = require("courier");
-    var builder = require("builder");
-    var spawn = require("spawn");
-    var worker = require("worker");
-    var transfer = require("transfer");
-    var warrior = require("warrior");
+	var courier = require("courier");
+	var builder = require("builder");
+	var spawn = require("spawn");
+	var worker = require("worker");
+	var transfer = require("transfer");
+	var warrior = require("warrior");
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
         var dropped = creep.pos.findClosest(FIND_DROPPED_ENERGY)
@@ -19,7 +16,7 @@ module.exports = function (creeps)
 
         if(creep.memory.role == "courier")
         {
-            courier(creep);
+          courier(creep);
         }
         else if(creep.memory.role == 'builder') {
             builder(creep);
@@ -49,5 +46,5 @@ module.exports = function (creeps)
             }
         }
 
-    }
+  }
 }

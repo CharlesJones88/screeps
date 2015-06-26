@@ -1,3 +1,4 @@
+
 module.exports = function(creep)
 {
     var attackFlag = Game.flags.Attack
@@ -13,44 +14,45 @@ module.exports = function(creep)
     }
     else
     {
-        var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-            if(object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
-            {
-                return object;
-            }
-        }});
-        if(target) {
-            creep.moveTo(target);
+    	var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
+    	    if(object.owner.username != "Source Keeper" /*&& object.owner.username != "nuclearfalcon"*/)
+    	    {
+    	        return object;
+    	    }
+    	}});
 
-            creep.attack(target);
-        }
-        else
-        {
-            var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
+    	if(target) {
+    	   creep.moveTo(target);
 
-                if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
-                {
-                    return object;
-                }
-            }});
+    	   creep.attack(target);
+    	}
+    	else
+    	{
+    	    var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
+
+    	    if(object.owner != undefined && object.owner.username != "Source Keeper" /*&& object.owner.username != "nuclearfalcon"*/)
+    	    {
+    	        return object;
+    	    }
+    	}});
             if(target)
             {
                 creep.moveTo(target);
                 creep.attack(target);
 
             }
-            else
-            {
+        	else
+        	{
 
-                var post = creep.memory.post
-                if(post == undefined)
-                {
-                    post = creep.pos.findClosest(FIND_FLAGS,{filter:{color:COLOR_RED}})
-                }
-                post = Game.getObjectById(post.id)
-                creep.moveTo(post)
-            }
-        }
+        		var post = creep.memory.post
+        		if(post == undefined)
+        		{
+        		    post = creep.pos.findClosest(FIND_FLAGS,{filter:{color:COLOR_RED}})
+        		}
+        		post = Game.getObjectById(post.id)
+        		creep.moveTo(post)
+        	}
+    	}
     }
     if(creep.energy < creep.energyCapacity)
     {
