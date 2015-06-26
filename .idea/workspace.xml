@@ -98,7 +98,7 @@
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.38977367">
-              <caret line="31" column="67" selection-start-line="31" selection-start-column="67" selection-end-line="31" selection-end-column="67" />
+              <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -466,7 +466,13 @@
       <option name="project" value="LOCAL" />
       <updated>1435357068292</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Fix naming issue with spawn">
+      <created>1435357168632</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1435357168632</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -525,7 +531,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Adding spawns and other classes&#10;" />
     <MESSAGE value="Made some fixes to the harvester" />
     <MESSAGE value="Adding initial to main" />
     <MESSAGE value="Fixing issue with harvesters" />
@@ -550,7 +555,8 @@
     <MESSAGE value="Adding nomad code" />
     <MESSAGE value="Fixed issues with main code and transfer" />
     <MESSAGE value="Fix for creep home name" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix for creep home name" />
+    <MESSAGE value="Fix naming issue with spawn" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix naming issue with spawn" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -989,7 +995,7 @@
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38977367">
-          <caret line="31" column="67" selection-start-line="31" selection-start-column="67" selection-end-line="31" selection-end-column="67" />
+          <caret line="31" column="70" selection-start-line="31" selection-start-column="70" selection-end-line="31" selection-end-column="70" />
           <folding />
         </state>
       </provider>

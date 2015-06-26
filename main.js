@@ -10,6 +10,7 @@ var keeperKiller = require("keeperKiller");
 var kMedic = require("kMedic");
 var linkWorker = require("linkWorker");
 var repair = require("repair");
+var nomad = require('nomad');
 for(var i in Memory.creeps) {
     if(!Game.creeps[i]) {
         delete Memory.creeps[i];
@@ -51,6 +52,7 @@ for(var i in Memory.creeps) {
         room.memory.kMedics=[];
         room.memory.linkWorkers=[];
         room.memory.repairs=[];
+        room.memory.nomads = [];
     }
     for(var name in Game.creeps) {
          var startCpu = Game.getUsedCpu();
@@ -66,7 +68,6 @@ for(var i in Memory.creeps) {
     	{
     	    creep.pickup(dropped);
     	}
-
 
         if(creep.memory.role == "courier")
         {
@@ -116,10 +117,14 @@ for(var i in Memory.creeps) {
             repair(creep);
             room.memory.repairs.push(creep);
         }
+        else if(creep.memory.role == 'nomad') {
+            nomad(creep);
+            room.memory.nomads.push(creep);
+        }
         //Print cpu usage per creep
          var elapsed = Game.getUsedCpu() - startCpu;
          if(elapsed > 20)
-        console.log('Creep '+creep.memory.role+creep.memory.task +' has used '+elapsed+' CPU time');
+        console.log('Creep ' + creep.memory.role+creep.memory.task +' has used '+elapsed+' CPU time');
     }
 
 
@@ -130,6 +135,7 @@ for(var i in Memory.creeps) {
     Memory.workers = totWorkers;
     Memory.transfers = totTransfer;
     Memory.warriors = totWarriors;
+    Memory.nomads = totNomads;
     Memory.squads = squads;
 
     if(Game.spawns.Spawn1.room.name == "sim")
