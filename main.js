@@ -25,11 +25,11 @@ for(var i in Memory.creeps) {
     Memory.totalEnergy = 0;
     Memory.energyCapacity = 0;
     var spawns = Game.spawns;
-    for(var spawn in spawns) {
-        spawn = spawns[spawn];
-        Memory.totalEnergy += spawn.energy;
+    for(var spawnBase in spawns) {
+        spawnBase = spawns[spawnBase];
+        Memory.totalEnergy += spawnBase.energy;
         //ADD SEPARATE MODULE JUST FOR SPAWN LOGIC AND ROLE ASSIGNMENT
-        var totalEnergy = spawn.room.find(FIND_MY_STRUCTURES, {
+        var totalEnergy = spawnBase.room.find(FIND_MY_STRUCTURES, {
             filter: function (object) {
                 if (object.structureType == "extension") {
                     Memory.totalEnergy += object.energy;

@@ -97,8 +97,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4373928">
-              <caret line="63" column="65" selection-start-line="63" selection-start-column="65" selection-end-line="63" selection-end-column="65" />
+            <state vertical-scroll-proportion="0.38977367">
+              <caret line="31" column="67" selection-start-line="31" selection-start-column="67" selection-end-line="31" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -460,7 +460,13 @@
       <option name="project" value="LOCAL" />
       <updated>1435357023220</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Fix for creep home name">
+      <created>1435357068292</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1435357068292</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -519,7 +525,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Creates 1 worker and gets sources" />
     <MESSAGE value="Adding spawns and other classes&#10;" />
     <MESSAGE value="Made some fixes to the harvester" />
     <MESSAGE value="Adding initial to main" />
@@ -544,7 +549,8 @@
     <MESSAGE value="New code from Carter" />
     <MESSAGE value="Adding nomad code" />
     <MESSAGE value="Fixed issues with main code and transfer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed issues with main code and transfer" />
+    <MESSAGE value="Fix for creep home name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix for creep home name" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -982,8 +988,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4373928">
-          <caret line="63" column="65" selection-start-line="63" selection-start-column="65" selection-end-line="63" selection-end-column="65" />
+        <state vertical-scroll-proportion="0.38977367">
+          <caret line="31" column="67" selection-start-line="31" selection-start-column="67" selection-end-line="31" selection-end-column="67" />
           <folding />
         </state>
       </provider>
