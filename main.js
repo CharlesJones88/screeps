@@ -33,7 +33,7 @@ for(var i in Memory.creeps) {
     var squads = [];
     var rooms = Game.rooms;
     for(var room in rooms){
-        room = rooms[room]
+        room = rooms[room];
         room.memory.couriers = [];
         room.memory.squads = [];
         room.memory.builders = [];
@@ -127,12 +127,12 @@ for(var i in Memory.creeps) {
 
     if(Game.spawns.Spawn1.room.name == "sim")
     {
-        Game.creeps.test.memory.role = "keeperKiller"
-        Game.creeps.test1.memory.role = "kMedic"
-        Game.creeps.test2.memory.role = "kMedic"
-        keeperKiller(Game.creeps.test)
-        kMedic(Game.creeps.test1)
-        kMedic(Game.creeps.test2)
+        Game.creeps.test.memory.role = "keeperKiller";
+        Game.creeps.test1.memory.role = "kMedic";
+        Game.creeps.test2.memory.role = "kMedic";
+        keeperKiller(Game.creeps.test);
+        kMedic(Game.creeps.test1);
+        kMedic(Game.creeps.test2);
 
         return;
     }
