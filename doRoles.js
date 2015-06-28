@@ -10,7 +10,7 @@ module.exports = function (creeps)
 	var warrior = require("warrior");
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
-        var dropped = creep.pos.findClosest(FIND_DROPPED_ENERGY)
+        var dropped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
         //Pickup dropped energy
         if(creep.pos.isNearTo(dropped)){creep.pickup(dropped);}
 
@@ -40,8 +40,8 @@ module.exports = function (creeps)
             }
             else
             {
-                creep.memory.role = "worker"
-                creep.memory.task = "coming"
+                creep.memory.role = "worker";
+                creep.memory.task = "coming";
                 creep.memory.target = creep.pos.findClosest(FIND_SOURCES)
             }
         }

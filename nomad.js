@@ -6,30 +6,26 @@ module.exports = function (creep) {
     if(creep.energy == 0 || creep.memory.task == "harvest")
     {
 
-        creep.memory.task = "harvest"
+        creep.memory.task = "harvest";
         if(creep.room != Game.flags.nomad.room){
-            creep.moveTo(Game.flags.nomad)
-
+            creep.moveTo(Game.flags.nomad);
         }
-        else
-        {
-            if(creep.memory.target == undefined)
-            {
+        else {
+            if(creep.memory.target == undefined) {
                 creep.memory.target = Game.flags.nomad.pos.findClosest(FIND_SOURCES)
             }
             var target = creep.memory.target;
             target = Game.getObjectById(target.id);
-            creep.moveTo(target)
-            creep.harvest(target)
+            creep.moveTo(target);
+            creep.harvest(target);
         }
-        if(creep.energy == creep.energyCapacity){
-            creep.memory.task = "work"
+        if(creep.energy == creep.energyCapacity) {
+            creep.memory.task = "work";
         }
     }
-    else
-    {
+    else {
         var sites = creep.room.find(FIND_CONSTRUCTION_SITES);
-        if(sites.length > 0){
+        if(sites.length > 0) {
             creep.moveTo(sites[0]);
             creep.build(sites[0]);
         }
@@ -47,9 +43,6 @@ module.exports = function (creep) {
             else{
                 creep.upgradeController(ctrl);
             }
-
         }
-
     }
-
-}
+};

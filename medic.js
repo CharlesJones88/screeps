@@ -7,11 +7,11 @@
  */
  module.exports = function(object)
  {
-     var attackFlag = Game.flags.Attack
+     var attackFlag = Game.flags.Attack;
         if(attackFlag && creep.room != Game.flags.Attack.room)
         {
             creep.moveTo(Game.flags.Attack);
-            console.log("Moving To Attack Flag")
+            console.log("Moving To Attack Flag");
         }
         else
         {
@@ -23,14 +23,13 @@
         	}});
         	if(target) {
         	   creep.moveTo(target);
-
         	   creep.heal(target);
         	}
         	else
         	{
         	    var target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
 
-        	    if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "nuclearfalcon")
+        	    if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "hesto2")
         	    {
         	        return object;
         	    }
@@ -39,14 +38,13 @@
                 {
                     creep.moveTo(target);
                     creep.attack(target);
-
                 }
             	else
             	{
 
-            		var post = creep.memory.post
-            		post = Game.getObjectById(post.id)
-            		creep.moveTo(post)
+            		var post = creep.memory.post;
+            		post = Game.getObjectById(post.id);
+            		creep.moveTo(post);
             	}
         	}
         }
@@ -54,4 +52,4 @@
         {
             creep.heal(creep);
         }
- }
+ };

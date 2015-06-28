@@ -13,11 +13,8 @@ module.exports = function(creep){
 			creep.moveTo(source);
 			creep.harvest(source);
 		}
-		else{
+		else {
 			var x = creep.moveTo(target);
 		}
-
-
-
 	}
-}
+};

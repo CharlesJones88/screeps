@@ -6,26 +6,24 @@
  * var mod = require('builder'); // -> 'a thing'
  */
  module.exports = function(creep){
-     	var spawn = creep.memory.home
-	    spawn = Game.getObjectById(spawn.id)
-
-	    var target;
+    var spawn = creep.memory.home;
+    spawn = Game.getObjectById(spawn.id);
+    var target;
 	if(creep.memory.target == "none"){
-	    target = getTarget(creep,creep.memory.task)
+	    target = getTarget(creep,creep.memory.task);
 	}
-	target = Game.getObjectById(creep.memory.target.id)
+	target = Game.getObjectById(creep.memory.target.id);
 
 	if(creep.energy == 0 && Memory.workers > 1 && Memory.transfers > 1 ) {
 		creep.moveTo(spawn);
 		spawn.transferEnergy(creep);
 	}
 	else if(creep.memory.target != 'none' && creep.memory.task != 'construction'){
-
-	    creep.moveTo(target)
-	    creep.build(target)
+	    creep.moveTo(target);
+	    creep.build(target);
 	    if(target.progress >= target.progressTotal)creep.memory.target = "none";
 	}
-	else if(creep.memory.target != 'none' && creep.memory.task == "construction"){
+	else if(creep.memory.target != 'none' && creep.memory.task == "construction") {
 
 	}
     else if(Game.flags.bMove != undefined)
@@ -36,7 +34,7 @@
 				creep.build(targets[0]);
       }
     }
-}
+};
 
 function getTarget(creep,task){
     var target;
