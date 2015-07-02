@@ -1,4 +1,4 @@
-module.exports=function repair(creep){
+module.exports = function repair(creep) {
     if(creep.fatige > 0)return;
     var spawn = creep.memory.home;
 	spawn = Game.getObjectById(spawn.id);
@@ -12,15 +12,15 @@ module.exports=function repair(creep){
         creep.memory.target = spawn;
     }
     //Reload on energy
-    else if(creep.energy == 0){
-        if(room.energy <= 300)return;
+    else if(creep.energy == 0) {
+        if(room.roomEnergy <= 300)return;
         creep.moveTo(spawn);
         spawn.transferEnergy(creep);
     }
     //Repair Target
     else {
-        if(creep.memory.target == "none"){
-            getTarget(creep,room)
+        if(creep.memory.target == "none") {
+            getTarget(creep,room);
         }
         var target = creep.memory.target;
         target = Game.getObjectById(target.id);
@@ -28,7 +28,7 @@ module.exports=function repair(creep){
         creep.repair(target);
         checkTarget(creep,target);
     }
-}
+};
 
 //Determine what to fix first
 function getTarget(creep,room) {
@@ -36,18 +36,20 @@ function getTarget(creep,room) {
     var ramparts =[];
     var roads = [];
     var walls = [];
-    room.find(FIND_STRUCTURES,{filter:function(object){
-        if(object.hits < object.hitsMax * .75 ){
+    room.find(FIND_STRUCTURES,{filter:function(object) {
+        if(object.hits < object.hitsMax * .75 ) {
             if(object.structureType == STRUCTURE_RAMPART) {
                 ramparts.push(object);
             }
             else if(object.structureType == STRUCTURE_ROAD){
                 roads.push(object);
             }
-            else if(object.structureType == STRUCTURE_WALL && object.hits < 1000000){
-                var near = object.pos.findInRange(FIND_HOSTILE_STRUCTURES,3)
-                if(near == false)
-                    walls.push(object);
+            else if(object.structureType == STRUCTURE_WALL) {
+                var near = object.pos.findInRange(FIND_HOSTILE_STRUCTURES,3);
+                if(object.hits < 3000000 || object.hits < 2000000) {
+                    if (near == false)
+                        walls.push(object);
+                }
             }
         }
     }});
@@ -68,7 +70,7 @@ function getTarget(creep,room) {
 //Determine if target should keep being repaired or not
 function checkTarget(creep,target){
     if(target == null)return;
-    if(target.hits == target.hitsMax || target.hits >= 4000000){
+    if(target.hits == target.hitsMax || target.hits >= 4000000) {
         creep.memory.target = "none";
     }
 }

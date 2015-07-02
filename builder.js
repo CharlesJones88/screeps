@@ -16,36 +16,34 @@ module.exports = function(creep){
     else if((creep.energy == 0 || creep.memory.task == "harvest") && Game.flags.bMove != undefined ){
         //var target = creep.pos.findClosest(getSafeSources(Game.flags.bMove.room));
         var target = creep.pos.findClosest(FIND_SOURCES);
-        creep.moveTo(target)
+        creep.moveTo(target);
         creep.harvest(target);
-        if(creep.energy == creep.energyCapacity){
-            creep.memory.task = "build"
-
+        if(creep.energy == creep.energyCapacity) {
+            creep.memory.task = "build";
         }
-        else{
-            creep.memory.task = "harvest"
+        else {
+            creep.memory.task = "harvest";
         }
 
     }
-    else if(Game.flags.bMove != undefined)
-    {
-
-        if(creep.room != Game.flags.bMove.room){
+    else if(Game.flags.bMove != undefined) {
+        if(creep.room != Game.flags.bMove.room) {
             creep.moveTo(Game.flags.bMove);
 
         }
-        else{
+        else {
             var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             if(targets.length) {
-                creep.moveTo(targets[0]);
-                creep.build(targets[0]);
+                if(creep.pos.isNearTo(targets[0])) {
+                    creep.build(targets[0]);
+                }
+                else {
+                    creep.moveTo(targets[0]);
+                }
             }
-            //creep.moveTo(Game.flags.bMove)
         }
-
-
     }
-    else{
+    else {
         var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
         if(targets.length) {
             creep.moveTo(targets[0]);

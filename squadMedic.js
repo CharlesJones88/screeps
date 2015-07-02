@@ -1,12 +1,12 @@
 module.exports = function(creep, flag) {
 	if(flag.color == COLOR_CYAN) {
-		creep.moveTo(flag);
+		rally(creep,flag);
 	}
 	else if(flag.color == COLOR_RED) {
-		attack(creep,flag);
+		rally(creep,flag);
 	}
 	else if(flag.color == COLOR_YELLOW) {
-		attackPoint(creep,flag);
+		rally(creep,flag);
 	}
 	else if(flag.color == COLOR_GREY) {
 		if(creep.room != flag.room) {
@@ -18,181 +18,92 @@ module.exports = function(creep, flag) {
 		}
 	}
 	else if(flag.color == COLOR_WHITE) {
-		holdPosition(creep,flag)
+		holdPosition(creep,flag);
 	}
 	else if(flag.color == COLOR_BLUE) {
-		rally(creep,flag)
+		rally(creep,flag);
 	}
-
-	if(Game.flags.ranged != undefined) {
-		creep.moveTo(Game.flags.ranged)
-	}
-
 };
-
-function attackPoint(creep,flag) {
-	if(creep.room != flag.room) {
-		creep.moveTo(flag);
-		return;
-	}
-	var target = creep.room.lookForAt('structure',flag);
-
-	if(target == undefined) {
-		var target = flag.pos.findClosest(FIND_STRUCTURES, {
-			filter: function (object) {
-				if (object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username != "hesto2" && object.structureType != STRUCTURE_CONTROLLER) {
-					return object;
-				}
-			}, algorithm: 'dijkstra ', maxOps: 250
-		});
-	}
-	if(target) {
-		if(creep.pos.inRangeTo(target,3)) {
-			creep.rangedAttack(target);
-		}
-		else {
-			creep.moveTo(target);
-		}
-	}
-	else {
-		creep.moveTo(flag);
-	}
-}
-function rally(creep,flag) {
-	var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object) {
-		if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2") {
-			return object;
-		}
-	}});
-	if(target == undefined) {
-		creep.moveTo(flag);
-		creep.memory.target = "none";
-	}
-	else {
-		console.log("HHIT");
-		var targets = creep.pos.findInRange(target, 3);
-		if(targets != undefined) {
-			creep.rangedAttack(targets[0]);
-		}
-		else {
-			creep.moveTo(targets[0]);
-		}
-
-
-	}
-}
 
 function holdPosition(creep,flag) {
 	var order = flag.name.split('-')[1];
 	var x = flag.pos.x;
 	var y = flag.pos.y;
-	if(creep.room != flag.room) {
+	if(creep.room != flag.room){
 		creep.moveTo(flag);
 		return;
 	}
-	if(order == "Top") {
-		y+=2;
+	if(order == "Top"){
+		y +=1
 		while(flag.room.lookForAt('creep',x,y) != undefined && flag.room.lookForAt('creep',x,y) != creep) {
 			x++;
 		}
 	}
-	else if(order == "Bottom"){
+	else if(order == "Bottom") {
+		y += 1;
 		while(flag.room.lookForAt('creep',x,y) != undefined && flag.room.lookForAt('creep',x,y) != creep) {
 			x++;
 		}
 	}
 	else if(order == "Left") {
-		x+=2;
+		x += 1;
 		while(flag.room.lookForAt('creep',x,y) != undefined && flag.room.lookForAt('creep',x,y) != creep) {
 			y++;
 		}
 	}
-	else if(order == "Right") {
+	else if(order == "Right"){
+		x +=1;
 		while(flag.room.lookForAt('creep',x,y) != undefined && flag.room.lookForAt('creep',x,y) != creep) {
 			y++;
 		}
 	}
 
 	if(creep.pos.x == x && creep.pos.y == y) {
-		attackNear(creep);
-	}
-	else{
-		creep.moveTo(x,y);
-	}
-}
-
-function attackNear(creep) {
-	var target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object) {
-		if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2") {
-			return object;
+		var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
+			if(object.memory.squad == creep.memory.squad && object.hits < object.hitsMax && object != creep) {
+				creep.memory.target = object;
+				return object;
+			}
+		}});
+		if(target != undefined && target != null) {
+			if(creep.pos.isNearTo(target)) {
+				creep.heal(target);
+			}
+			else {
+				creep.rangedHeal(target);
+			}
 		}
-	},algorithm:'astar ',maxOps:250});
-	if(target != undefined) {
-		if (creep.pos.inRangeTo(target, 3)) {
-			creep.rangedAttack(target);
-		}
-	}
-}
-
-function attack(creep,flag) {
-	var order = flag.name.split('-')[1];
-	if(creep.room != flag.room) {
-		creep.moveTo(flag);
-		console.log("Moving");
 	}
 	else {
-		var target;
-		if(order == "Workers") {
-			target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object){
-				if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2")
-				{
-					if(object.getActiveBodyparts(WORK) > 0 || object.getActiveBodyparts(CARRY) > 0 ) {
-						return object;
-					}
-				}
-			},algorithm:'dijkstra ',maxOps:250});
-		}
-		else {
-			target = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object) {
-				if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2")
-				{
-					if(object.getActiveBodyparts(ATTACK)>0 || object.getActiveBodyparts(RANGED_ATTACK)>0 || object.getActiveBodyparts(HEAL) > 0 ){
-						return object;
-					}
-				}
-			},algorithm:'dijkstra ',maxOps:250});
+		creep.moveTo(x,y);
+	}
 
-			target1 = creep.pos.findClosest(FIND_HOSTILE_CREEPS, {filter:function(object) {
-				if(object.owner.username != "Source Keeper" && object.owner.username != "hesto2") {
-					return object;
-				}
-			},algorithm:'dijkstra ',maxOps:250});
+}
 
-			if(target) {
-				creep.moveTo(target);
-				creep.rangedAttack(target);
-			}
-			else if(target1) {
-				target = target1;
-			}
-			else {
-				target = creep.pos.findClosest(FIND_HOSTILE_STRUCTURES, {filter:function(object){
-					if(object.owner != undefined && object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username !="hesto2" && object.structureType != STRUCTURE_CONTROLLER) {
-						return object;
-					}
-				},algorithm:'dijkstra ',maxOps:250});
-			}
+function rally(creep,flag) {
+	var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
+		if((object.memory.squad == creep.memory.squad || object.owner.username == 'hesto2') && object.hits < object.hitsMax && object != creep && object.memory.task != 'medic') {
+			creep.memory.target = object;
+			return object;
 		}
-		if(target != undefined && target != null) {
-			if(creep.pos.inRangeTo(target,3)) {
-				creep.rangedAttack(target);
+	}});
+	if(target == undefined || creep.memory.target == "none") {
+		target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
+			if(object.hits < object.hitsMax && object != creep) {
+				creep.memory.target = object;
+				return object;
 			}
-			else {
-				creep.moveTo(target);
-			}
+		}});
+	}
+	if(target == undefined || creep.memory.target == "none") {
+		if(creep.pos.inRangeTo(flag,3) == false) {
+			creep.moveTo(flag, {reusePath:20});
 		}
-		else {
-			creep.moveTo(flag);
-		}
+		creep.memory.target = "none";
+		if(creep.hits < creep.hitsMax)creep.heal(creep)
+	}
+	else {
+		creep.moveTo(target);
+		creep.heal(target);
 	}
 }

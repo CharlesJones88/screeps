@@ -125,24 +125,23 @@ module.exports = function() {
 			builders = 2;
 			squads = 3;
 			repairs = 2;
-			transfers = workers+2;
+			transfers = workers + 1;
 			keeperKillers = 0;
 			kMedics = 0;
 		}
 		else if(roomEnergy > 1650){
-			workers = 2 * (1+ sSources);
+			workers = 2 * (1 + sSources);
 			warriors = 5;
 			couriers = 3;
 			builders = 2;
 			squads = 2;
 			repairs = 2;
-			transfers = workers + 2;
+			transfers = workers + 1;
 			keeperKillers = 0;
 			kMedics = 0
 		}
-		else if(roomEnergy > 1200)
-		{
-			workers = 2 * (1 + sSources + 1);
+		else if(roomEnergy > 1200) {
+			workers = 2 * (1 + sSources);
 			warriors = 5;
 			couriers = 3;
 			builders = 2;
@@ -153,7 +152,7 @@ module.exports = function() {
 			kMedics = 0
 		}
 		else if(roomEnergy > 1100) {
-			workers = 3 * (1 + sSources + 1);
+			workers = 3 * (1 + sSources);
 			warriors = 5;
 			couriers = 3;
 			builders = 2;
@@ -171,7 +170,7 @@ module.exports = function() {
 			builders = 2;
 			squads = 1;
 			repairs = 1;
-			transfers = workers + 2;
+			transfers = workers + 1;
 			keeperKillers = 0;
 			kMedics = 0
 		}
@@ -182,7 +181,7 @@ module.exports = function() {
 			builders = 2;
 			repairs = 1;
 			squads = 0;
-			transfers = workers + 2;
+			transfers = workers + 1;
 			keeperKillers = 0;
 			kMedics = 0;
 		}
@@ -192,17 +191,17 @@ module.exports = function() {
 			couriers = 3;
 			builders = 1;
 			repairs = 1;
-			transfers = workers + 2;
+			transfers = workers;
 		}
 		else if(roomEnergy > 450) {
 			warriors = 0;
 			workers = 2 * (1 + sSources);
 			builders = 1;
 			couriers = 1;
-			transfers = workers
+			transfers = workers;
 		}
 		else {
-			workers =2 * (1 + sSources);
+			workers = 2 * (1 + sSources);
 			couriers = 1;
 			builders = 1;
 			transfers = workers;
@@ -224,8 +223,7 @@ module.exports = function() {
 				courierBody = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE];
 			}
 			else
-				linkWorkers = 0;
-
+				linkWorkers = 1;
 
 			doLinks(links);
 		}
@@ -238,22 +236,26 @@ module.exports = function() {
 			if(spawn.spawning != null )continue;
 			var Tsquads = checkSquads();
 
-			if(Tworkers < workers ){
+			if(Tworkers < workers ) {
 				var index = room.memory.curSource;
-				console.log(spawn.name + " Spawning worker for " + room.memory.curSource);
+				console.log(spawn.name + " spawning worker for " + room.memory.curSource);
 
 				var target = room.memory.safeSources[index];
 				var result = spawn.createCreep(workerBody,undefined, {role:"worker",target:target,task:"coming",home:spawn,room:spawn.room});
 				if(typeof(result == 'string')){
 					room.memory.curSource++;
-					if(room.memory.curSource == room.memory.safeSources.length){room.memory.curSource = 0}
+					if(room.memory.curSource == room.memory.safeSources.length) {
+						room.memory.curSource = 0;
+					}
 				}
 			}
 			else if(Ttransfers < transfers){
 				console.log(spawn.name + " spawning Transfer");
 				var count = spawn.room.find(FIND_MY_CREEPS, {filter:
-					function(object){
-						if(object.memory.role =="transfer" && object.memory.task == "extension")return object;}});
+					function(object) {
+						if(object.memory.role =="transfer" && object.memory.task == "sharing")
+							return object;
+					}});
 				var task;
 				if(count.length < 1 && room.memory.transfers > 11) {
 					task = "sharing";
@@ -267,10 +269,10 @@ module.exports = function() {
 				var target;
 
 				for(var link in links) {
-					console.log(spawn.name + " Spawning linkWorker");
+					console.log(spawn.name + " spawning linkWorker");
 					link = links[link];
 					if(link.pos.inRangeTo(link.room.controller,3))continue;
-					else{
+					else {
 						target = link;
 						break;
 					}
@@ -286,34 +288,33 @@ module.exports = function() {
 				console.log(Tcouriers + " " + couriers);
 				spawn.createCreep(courierBody,undefined, {role:"courier",home:spawn,target:"none",room:spawn.room});
 			}
-
 			else if(Tbuilders < builders && ((spawn.room.find(FIND_CONSTRUCTION_SITES).length)||Game.flags.bMove!=undefined)) {
 				console.log(spawn.name + " Spawning builder");
 				spawn.createCreep(builderBody,undefined, {role:"builder", home:spawn,target:"none", task:"none",room:spawn.room});
 			}
 			else if(Trepairs < repairs) {
-				console.log(spawn.name + " Spawning repair");
+				console.log(spawn.name + " spawning repair");
 				var roads = false;
-				task = "none"
-				for(var creep in room.memory.repairs){
+				task = "none";
+				for(var creep in room.memory.repairs) {
 					creep = room.memory.repairs[creep];
-					if(creep.memory.task == "roads"){
+					if(creep.memory.task == "roads") {
 						roads = true;
 						break;
 					}
 				}
-				if(roads == false){
+				if(roads == false) {
 					task = "roads";
 					console.log("Making the repair do roads")
 				}
 
 				spawn.createCreep(repairBody,undefined, {role:"repair", home:spawn,target:"none", task:task,room:spawn.room});
 			}
-			else if(Tnomads < nomads && Game.flags.nomad != undefined){
-				console.log(spawn.name + " Spawning nomad");
+			else if(Tnomads < nomads && Game.flags.nomad != undefined) {
+				console.log(spawn.name + " spawning nomad");
 				spawn.createCreep(nomadBody,undefined, {role:"nomad",task:"none", home:spawn,room:spawn.room});
 			}
-			else if(roomEnergy == room.energyCapacity){
+			else if(roomEnergy == room.energyCapacity) {
 				//spawnForNeighbors(spawn)
 			}
 		}
@@ -321,9 +322,8 @@ module.exports = function() {
 			checkSquads(spawn,squads,roomEnergy);
 		if(spawn == undefined)return;
 		var near = spawn.pos.findInRange(FIND_MY_CREEPS,1);
-		if(near.length > 6){
-			for(var creep in near){
-				console.log("Move dang it!");
+		if(near.length > 6) {
+			for(var creep in near) {
 				creep = near[creep];
 				creep.move(TOP)
 			}
@@ -333,9 +333,9 @@ module.exports = function() {
 
 function countType(room,type) {
 	var count = room.find(FIND_MY_CREEPS, {
-		filter: function(creep)
-		{ if(creep.memory.role == type)
-			return true;
+		filter: function(creep) {
+			if(creep.memory.role == type)
+				return true;
 
 			return false;
 		}
@@ -347,8 +347,11 @@ function calculateRoomEnergy(room) {
 
 	var totalEnergy = 0;
 	var energyCap = 0;
-	room.find(FIND_MY_STRUCTURES, {filter:function(object){
-		if(object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN){totalEnergy += object.energy;energyCap += object.energyCapacity }
+	room.find(FIND_MY_STRUCTURES, {filter:function(object) {
+		if(object.structureType == STRUCTURE_EXTENSION || object.structureType == STRUCTURE_SPAWN) {
+			totalEnergy += object.energy;
+			energyCap += object.energyCapacity;
+		}
 	}});
 	room.memory.energyCapacity = energyCap;
 	return totalEnergy;
@@ -395,7 +398,7 @@ function checkSquads(spawn,squads,roomEnergy) {
 	}
 
 	var sCreeps = Memory.squads;
-	for(var i=1;i<=squads;i++) {
+	for(var i = 1; i <= squads; i++) {
 		var medic = 0;
 		var ranged = 0;
 		var melee = 0;
@@ -417,19 +420,17 @@ function checkSquads(spawn,squads,roomEnergy) {
 			}
 		}
 		else if(melee < 4){
-			if(spawn.canCreateCreep(meleeBody) == OK){
+			if(spawn.canCreateCreep(meleeBody) == OK) {
 				console.log(spawn.name + " Spawning melee");
 				spawn.createCreep(meleeBody,undefined,{role:"squad",task:"melee",target:"none",status:"none",squad:i,room:spawn.room});
 			}
 		}
-		else if(ranged < 4){
-			if(spawn.canCreateCreep(rangedBody) == OK){
+		else if(ranged < 4) {
+			if(spawn.canCreateCreep(rangedBody) == OK) {
 				console.log(spawn.name + " Spawning ranged");
 				spawn.createCreep(rangedBody,undefined,{role:"squad",task:"ranged",target:"none",status:"none",squad:i,room:spawn.room});
 			}
 		}
-
-
 	}
 	//Check each role in the squad and get a count of what is in it.
 

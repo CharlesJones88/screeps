@@ -8,7 +8,7 @@ module.exports = function (creep) {
         sources = creep.pos.findClosest(FIND_SOURCES);
     }
     else {
-        var sources = creep.memory.target;
+        sources = creep.memory.target;
         sources = Game.getObjectById(sources["id"]);
     }
 
@@ -24,14 +24,13 @@ module.exports = function (creep) {
     else {
 
         if(creep.memory.task == "meeting") {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
-                function(object){
-                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)
+            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
+                    if(object.memory.role == "transfer" && object.memory.target.id == creep.id)
                         return object;
-                },algorithm:'astar',maxOps:100});
+                }});
 
             if(target  == undefined) {
-                creep.memory.task ="going";
+                creep.memory.task = "going";
             }
             else {
                 if(creep.pos.isNearTo(target)) {
@@ -43,19 +42,17 @@ module.exports = function (creep) {
             }
         }
         else {
-            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
-                function(object){
-                    if(object.memory.role =="transfer" && object.memory.target.id == creep.id)
+            var target = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
+                    if(object.memory.role == "transfer" && object.memory.target.id == creep.id)
                         return object;
                 }});
             if(target != undefined && target != null) {
-                creep.memory.task = "meeting"
+                creep.memory.task = "meeting";
             }
             creep.memory.task = "going";
             creep.moveTo(spawn);
             creep.transferEnergy(spawn);
-            var transfer = creep.pos.findClosest(FIND_MY_CREEPS, {filter:
-                function(object){
+            var transfer = creep.pos.findClosest(FIND_MY_CREEPS, {filter:function(object) {
                     if(object.memory.role =="transfer")
                         return object;
                 }});
