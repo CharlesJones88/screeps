@@ -1,13 +1,17 @@
 module.exports = function(creep, flag) {
 	if(flag.color == COLOR_CYAN) {
-		creep.moveTo(flag, {reusePath:20});
+		creep.moveTo(flag);
 	}
 	else if(flag.color == COLOR_RED) {
-		if(creep.room.memory.hostileCreeps.length > 0) {
+		if(creep.room != flag.room) {
+			creep.moveTo(flag);
+			return;
+		}
+		if(creep.room.memory.hostileCreep.length > 0) {
 			creep.findAndAttack();
 		}
 		else {
-			if(creep.pos.inRangeTo(flag, 2)) {
+			if(creep.pos.inRangeTo(flag,2)) {
 				return;
 			}
 			creep.moveTo(flag, {reusePath:20});
@@ -85,8 +89,11 @@ function attackPoint(creep,flag) {
 				return object;
 			}
 		}});
+	else {
+		target = target[0];
+	}
 	if(target) {
-		creep.moveTo(target);
+		creep.moveTo(flag);
 		creep.attack(target);
 	}
 	else {

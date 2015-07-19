@@ -32,7 +32,6 @@ module.exports = function repair(creep) {
 
 //Determine what to fix first
 function getTarget(creep,room) {
-
     var ramparts =[];
     var roads = [];
     var walls = [];
@@ -41,7 +40,7 @@ function getTarget(creep,room) {
             if(object.structureType == STRUCTURE_RAMPART) {
                 ramparts.push(object);
             }
-            else if(object.structureType == STRUCTURE_ROAD){
+            else if(object.structureType == STRUCTURE_ROAD) {
                 roads.push(object);
             }
             else if(object.structureType == STRUCTURE_WALL) {

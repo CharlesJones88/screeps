@@ -1,50 +1,83 @@
+module.exports = function () {
+    var courier = require("courier");
+    var builder = require("builder");
+    var worker = require("worker");
+    var transfer = require("transfer");
+    var squad = require("squad");
+    var keeperKiller = require("keeperKiller");
+    var kMedic = require("kMedic");
+    var linkWorker = require("linkWorker");
+    var repair = require("repair");
+    var nomad = require("nomad");
 
+    var startCpu;
+    var elapsed;
 
-module.exports = function (creeps)
-{
-	var courier = require("courier");
-	var builder = require("builder");
-	var spawn = require("spawn");
-	var worker = require("worker");
-	var transfer = require("transfer");
-	var warrior = require("warrior");
-    for(var name in Game.creeps) {
-        var creep = Game.creeps[name];
-        var dropped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
-        //Pickup dropped energy
-        if(creep.pos.isNearTo(dropped)){creep.pickup(dropped);}
-
-        if(creep.memory.role == "courier")
-        {
-          courier(creep);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.transfers) {
+        creep = Memory.transfers[creep];
+        transfer(creep);
+        elapsed = Game.getUsedCpu() - startCpu;
+        if(elapsed > 130) {
+            console.log('TRANSFERS EXCEEDED LIMIT, BREAKING');
+            break;
         }
-        else if(creep.memory.role == 'builder') {
-            builder(creep);
-        }
-        else if(creep.memory.role == 'worker') {
-            worker(creep);
-        }
-        else if(creep.memory.role == 'transfer') {
-            transfer(creep);
-        }
-        else if(creep.memory.role == "warrior")
-        {
-            warrior(creep);
-            totWarriors++;
-        }
-        else if(creep.memory.role == undefined)
-        {
-            if(Game.spawns.Spawn1.room.mode == MODE_SIMULATION)
-            {
-
-            }
-            else
-            {
-                creep.memory.role = "worker";
-                creep.memory.task = "coming";
-                creep.memory.target = creep.pos.findClosest(FIND_SOURCES)
-            }
-        }
-
-  }
-}
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("TRANSFERS: " + elapsed);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.squads) {
+        creep = Memory.squads[creep];
+        squad(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("SQUADS: " + elapsed);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.linkWorkers) {
+        creep = Memory.linkWorkers[creep];
+        linkWorker(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("LINKWORKERS: " + elapsed);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.couriers) {
+        creep = Memory.couriers[creep];
+        courier(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("COURIERS: " + elapsed);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.builders) {
+        creep = Memory.builders[creep];
+        builder(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("BUILDERS: " + elapsed);
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.repairs) {
+        creep = Memory.repairs[creep];
+        creep.say("HI");
+        repair(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("REPAIRS: " + elapsed);
+    for(creep in Memory.keeperKillers) {
+        creep = Memory.keeperKillers[creep];
+        keeperKiller(creep);
+    }
+    for(creep in Memory.kMedics) {
+        creep = Memory.kMedics[creep];
+        kMedic(creep);
+    }
+    for(creep in Memory.nomads) {
+        creep = Memory.nomads[creep];
+        nomad(creep);
+    }
+    startCpu = Game.getUsedCpu();
+    for(creep in Memory.workers) {
+        creep = Memory.workers[creep];
+        worker(creep);
+    }
+    elapsed = Game.getUsedCpu()-startCpu;
+    console.log("WORKERS: " + elapsed);
+};

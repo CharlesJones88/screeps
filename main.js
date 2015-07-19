@@ -1,21 +1,9 @@
 //Add squad status tracker for room. Make them all return if they are near their flag and the status is PEACE
 
-var courier = require("courier");
-var builder = require("builder");
-var spawn = require("spawn");
-var worker = require("worker");
-var transfer = require("transfer");
-//var construct = require("construct");
-var squad = require("squad");
-var keeperKiller = require("keeperKiller");
-var kMedic = require("kMedic");
-var linkWorker = require("linkWorker");
-var repair = require("repair");
-var nomad = require("nomad");
+var doRoles = require('doRoles');
 var prototypes = require('prototypes');
 var rooms = require('rooms');
-var cpuInit;
-var cpuCreeps;
+var spawn = require('spawn');
 var cpuSpawn;
 
 var cpuInit = Game.getUsedCpu();
@@ -27,121 +15,109 @@ for(var i in Memory.creeps) {
     }
 }
 prototypes();
-var totCouriers = 0;
-var totHarvesters = 0;
-var totBuilders = 0;
-var totJanitors = 0;
-var totTransfer = 0;
-var totWorkers = 0;
-var totWarriors = 0;
-
-Memory.totalEnergy = 0;
-Memory.energyCapacity = 0;
+//Init Rooms
+var couriers = {};
+var builders = {};
+var workers = {};
+var transfers = {};
+var keeperKillers = {};
+var kMedics = {};
+var linkWorkers = {};
+var repairs = {};
+var nomads = {};
 
 var squads = [];
+
+var squadGroups = {};
+for (var i = 1; i < 4; i++) {
+    squadGroups[i] = {};
+    squadGroups.medic = {};
+    squadGroups.melee = {};
+    squadGroups.ranged = {};
+}
+
+Memory.spawns = Game.spawns;
+
+var cpuRooms = Game.getUsedCpu();
 rooms();
-var cpuCreeps = Game.getUsedCpu();
+console.log("ROOMS: " + (Game.getUsedCpu() - cpuRooms));
 for(var name in Game.creeps) {
-    var startCpu = Game.getUsedCpu();
-
     var creep = Game.creeps[name];
-    if(creep.memory.room == undefined) {
-        creep.memory.room = creep.room;
+    //if(creep.fatigue > 0)continue;
+    if(creep.memory.room == undefined){
+        creep.memory.room = creep.room
     }
-    // creep logic goes here
-
     var room = Game.rooms[creep.memory.room.name];
 
-    var dropped = creep.pos.findClosest(FIND_DROPPED_ENERGY);
-    if(creep.pos.isNearTo(dropped)) {
-        creep.pickup(dropped);
-    }
-
-    if(creep.memory.role == "courier") {
-        courier(creep);
+    if(creep.memory.role == "courier")
+    {
+        couriers[creep.name] = creep;
         room.memory.couriers.push(creep);
-        totCouriers++;
     }
-    else if(creep.memory.role == "squad") {
+    else if(creep.memory.role == "squad"){
         squads.push(creep);
+        squadGroups[creep.memory.squad][creep.memory.task][creep.name] = creep;
         room.memory.squads.push(creep);
-        squad(creep);
     }
     else if(creep.memory.role == 'builder') {
-        builder(creep);
+        builders[creep.name] = creep;
         room.memory.builders.push(creep);
-        totBuilders++;
     }
     else if(creep.memory.role == 'worker') {
-        worker(creep);
+        workers[creep.name] = creep;
         room.memory.workers.push(creep);
-        totWorkers++;
     }
     else if(creep.memory.role == 'transfer') {
-        transfer(creep);
+        transfers[creep.name] = creep;
         room.memory.transfers.push(creep);
-        totTransfer++;
     }
-    else if(creep.memory.role == "keeperKiller") {
-        keeperKiller(creep);
+    else if(creep.memory.role == "keeperKiller"){
+        keeperKillers[creep.name] = creep;
         room.memory.keeperKillers.push(creep);
     }
-    else if(creep.memory.role == "kMedic") {
-        kMedic(creep);
+    else if(creep.memory.role == "kMedic"){
+        kMedics[creep.name] = creep;
         room.memory.kMedics.push(creep);
     }
-    else if(creep.memory.role == "linkWorker") {
-        linkWorker(creep);
+    else if(creep.memory.role == "linkWorker"){
+        linkWorkers[creep.name] = creep;
         room.memory.linkWorkers.push(creep);
     }
     else if(creep.memory.role == "repair"){
-        repair(creep);
+        repairs[creep.name] = creep;
         room.memory.repairs.push(creep);
     }
     else if(creep.memory.role == "nomad"){
-        nomad(creep);
+        nomads[creep.name] = creep;
         room.memory.nomads.push(creep);
     }
     if(creep.name == "test"){
         creep.moveTo(Game.flags.TEST);
     }
-    //Print cpu usage per creep
-    var elapsed = Game.getUsedCpu() - startCpu;
-    if(elapsed > 10)
-        console.log('Creep ' + creep.memory.role + ' ' + creep.memory.task + ' has used ' + elapsed + ' CPU time ' + creep.room.name);
-}
-cpuCreeps = Game.getUsedCpu() - cpuCreeps;
 
-//MemoryAssignment
-Memory.couriers = totCouriers;
-Memory.builders = totBuilders;
-Memory.workers = totWorkers;
-Memory.transfers = totTransfer;
-Memory.warriors = totWarriors;
+}
+
+
+Memory.couriers = couriers;
+Memory.builders = builders;
+Memory.workers = workers;
+Memory.transfers = transfers;
+Memory.keeperKillers = keeperKillers;
+Memory.kMedics = kMedics;
+Memory.linkWorkers = linkWorkers;
+Memory.repairs = repairs;
+Memory.nomads = nomads;
 Memory.squads = squads;
 
-/*
- if(Game.spawns.Spawn1.room.name == "sim")
- {
 
- Game.creeps.test.memory.role = "squadRanged"
- Game.creeps.test1.memory.role = "kMedic"
- Game.creeps.test2.memory.role = "kMedic"
- squadRanged(Game.creeps.test)
 
- return;
- }
- else
- {
- spawn();
- var elapsed = Game.getUsedCpu() - startCpu;
- }*/
+
+doRoles();
+
 cpuSpawn = Game.getUsedCpu();
 spawn();
 cpuSpawn = Game.getUsedCpu() - cpuSpawn;
 
 
 //console.log("#############MEMORY USAGE#################")
-console.log("INIT: " + cpuInit);
-console.log("CREEPS: " + cpuCreeps);
 console.log("SPAWN: " + cpuSpawn);

@@ -5,6 +5,7 @@
  * You can import it from another modules like this:
  * var mod = require('rooms'); // -> 'a thing'
  */
+var doLinks = require('links');
 module.exports = function() {
     var rooms = Game.rooms;
     for(var room in rooms) {
@@ -24,6 +25,10 @@ module.exports = function() {
         room.memory.sourceKeepers = [];
         room.memory.hostileCreeps = room.findHostileCreeps();
         room.memory.status = '';
+        room.memory.sources = [];
+        room.memory.structures = [];
+        room.getStructures();
+
         if(room.memory.nomadTargets == undefined)
             room.memory.nomadTargets = [];
 
@@ -31,14 +36,30 @@ module.exports = function() {
         if(room.memory.hostileCreeps.length == 0) {
             room.memory.status = 'PEACE';
         }
-        else{
+        else {
             room.memory.status = 'WAR';
-            /*if(room.controller.owner != undefined){
-             if(room.controller.owner.username == 'hesto2'){
-             owner = room.memory.hostileCreeps[0].owner.username
-             Game.notify("Under Attack by " + owner)
-             }
-             }*/
         }
+        var links = room.memory.structures.links;
+        doLinks(links);
     }
 };
+
+function getStructures(room) {
+
+}
+
+function adjacentRooms(room) {
+    var name = room.name;
+    name = name.split(/([A-Z])(\d+)/);
+    var xCard = name[1];
+    var xCoord = name[2];
+    var yCard = name[4];
+    var yCoord = name[5];
+
+    if(xCard == 'W') {
+        xCoord *= -1;
+    }
+    if(yCard == "S") {
+        yCoord *= -1;
+    }
+}
