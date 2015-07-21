@@ -11,8 +11,7 @@ module.exports = function() {
         var creeps = [];
         var room = this;
         this.find(FIND_HOSTILE_CREEPS, {filter:function(object) {
-            if(object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username != 'hesto2')
-            {
+            if(object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username != 'hesto2') {
                 if(object.getActiveBodyparts(ATTACK) > 0 || object.getActiveBodyparts(RANGED_ATTACK) > 0 || object.getActiveBodyparts(HEAL) > 0) {
                     room.memory.armedHostiles.push(object);
                 }
@@ -217,14 +216,16 @@ module.exports = function() {
 
 
         if(this.room.memory.roomEnergy < this.room.memory.energyCapacity ) {
+            var targets = [];
+            for(var structure in this.room.memory.structures.needsEnergy) {
+                structure = this.room.memory.structures.needsEnergy[structure];
+                structure = Game.getObjectById(structure);
+                targets.push(structure);
+            }
             task = 'assign target extension';
-            target = this.pos.findClosest(FIND_MY_STRUCTURES, {filter:function(object){
-
-                if(object.structureType == STRUCTURE_SPAWN || object.structureType == STRUCTURE_EXTENSION)
-                    if(object.my && object.energy < object.energyCapacity){return object;}
-
-            }});
-            target = Game.rooms[target.roomName].lookForAt('structure',target);
+            target = this.pos.findClosest(targets);
+            if(target == null)
+                target = targets[0];
         }
         else {
             return;
@@ -246,15 +247,12 @@ module.exports = function() {
 
 
         if(this.pos.isNearTo(target)) {
-            console.log(target);
             this.transferEnergy(target);
         }
         else{
             this.moveTo(target,{reusePath:20});
             // printElapsed(cpu)
         }
-
-
     }
 
     Creep.prototype.getDropped = function(){
@@ -268,24 +266,24 @@ module.exports = function() {
 
 }
 
-function checkLink(link,sources){
+function checkLink(link,sources) {
     link = Game.getObjectById(link);
     var linkPos = link.pos;
 
-    if(linkPos.inRangeTo(link.room.controller,3)){
-        return 'controller'
+    if(linkPos.inRangeTo(link.room.controller,3)) {
+        return 'controller';
     }
     else{
         for(var source in sources){
             source = Game.getObjectById(sources[source]);
-            if(linkPos.inRangeTo(source,4)){
-                return 'source'
+            if(linkPos.inRangeTo(source,4)) {
+                return 'source';
             }
         }
-        return 'node'
+        return 'node';
     }
 }
-function checkWall(wall,lairs){
+function checkWall(wall,lairs) {
 
 }
 
