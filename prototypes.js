@@ -7,12 +7,12 @@
  */
 module.exports = function() {
     Room.prototype.findHostileCreeps = function() {
-        if(this.memory == undefined)
-            return [];
+        if(this.memory == undefined)return [];
         var creeps = [];
         var room = this;
-        this.find(FIND_HOSTILE_CREEPS, {filter:function(object){
-            if(object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username != 'hesto2') {
+        this.find(FIND_HOSTILE_CREEPS, {filter:function(object) {
+            if(object.owner.username != "Source Keeper" && object.owner.username != "ultramixerman" && object.owner.username != 'hesto2')
+            {
                 if(object.getActiveBodyparts(ATTACK) > 0 || object.getActiveBodyparts(RANGED_ATTACK) > 0 || object.getActiveBodyparts(HEAL) > 0) {
                     room.memory.armedHostiles.push(object);
                 }
@@ -35,7 +35,6 @@ module.exports = function() {
         var lairs = [];
         var sources = [];
 
-
         needsRepair.ramparts = [];
         needsRepair.links = [];
         needsRepair.walls = [];
@@ -51,6 +50,7 @@ module.exports = function() {
                 lairs.push(object.id);
             }
         }});
+
 
         this.find(FIND_STRUCTURES,{filter: function(object) {
             var threshold;
@@ -85,15 +85,16 @@ module.exports = function() {
                 else if(type == 'source') {
                     links.sourceLinks.push(object.id);
                 }
-                else if(type == 'node') {
-                    links.nodes.push(object.id);
+                else if(type == 'node'){
+                    links.nodes.push(object.id)
                 }
 
-                if(object.hits < threshold) {
-                    needsRepair.links.push(object.id);
+
+                if(object.hits < threshold){
+                    needsRepair.links.push(object.id)
                 }
             }
-            else if(object.structureType == STRUCTURE_ROAD) {
+            else if(object.structureType == STRUCTURE_ROAD){
                 roads.push(object.id);
                 threshold = object.hitsMax * .75;
                 if(object.hits < threshold) {
@@ -102,7 +103,7 @@ module.exports = function() {
             }
             else if(object.structureType == STRUCTURE_RAMPART) {
                 ramparts.push(object.id);
-                threshold = object.hitsMax*.8;
+                threshold = object.hitsMax * .8;
                 if(object.hits < threshold) {
                     needsRepair.ramparts.push(object.id);
                 }
@@ -114,6 +115,8 @@ module.exports = function() {
                     needsRepair.walls.push(object.id);
                 }
             }
+
+
         }});
 
         this.memory.structures.ramparts = ramparts;
@@ -125,6 +128,8 @@ module.exports = function() {
         this.memory.structures.needsEnergy = needsEnergy;
         this.memory.structures.needRepair = needsRepair;
         this.memory.sources = sources;
+
+
     };
 
     RoomPosition.prototype.findEnemiesInAttackRange = function(opts) {
@@ -139,7 +144,7 @@ module.exports = function() {
         }
     };
 
-    Creep.prototype.findAndAttack = function() {
+    Creep.prototype.findAndAttack = function(){
         var method;
         var targets;
 
@@ -154,15 +159,15 @@ module.exports = function() {
             return;
         }
         //Determine which method to use
-        if(targets.length < 5){
-            method = 'astar';
+        if(targets.length < 5) {
+            method = 'astar'
         }
-        else{
+        else {
             method = 'dijkstra';
         }
 
         //Assign target and based off of what tools you have, move to Target
-        var target = this.pos.findClosest(this.room.memory.hostileCreeps,{algorithm:method});
+        var target = this.pos.findClosest(this.room.memory.hostileCreeps);
         var partsAttack = this.getActiveBodyparts(ATTACK);
         var partsRanged = this.getActiveBodyparts(RANGED_ATTACK);
         if(partsAttack > 0 || (partsAttack > 0 && partsRanged > 0)) {
@@ -181,48 +186,45 @@ module.exports = function() {
         }
         else if(partsRanged > 0) {
             this.kite(2,target);
+            if(target==null)return;
             if(this.pos.inRangeTo(target,3)) {
                 this.rangedAttack(target);
             }
         }
-        else {
+        else{
             this.kite(4,target);
         }
     };
 
-    Creep.prototype.kite = function(distance,target) {
-        if(target == null) {
-            return;
+    Creep.prototype.kite = function(distance,target){
+        if(target == null){return;}
+
+        if(this.pos.inRangeTo(target,distance)){
+            this.moveTo(this.pos.x + this.pos.x - target.pos.x, this.pos.y + this.pos.y - target.pos.y);
         }
-        if(this.pos.inRangeTo(target,distance)) {
-            this.moveTo(this.pos.x + this.pos.x - target.pos.x, this.pos.y + this.pos.y - target.pos.y );
-        }
-        else {
+        else{
             this.moveTo(target);
         }
     };
 
-    Creep.prototype.depositEnergy = function() {
+    Creep.prototype.depositEnergy = function(){
+
+        var cpu = Game.getUsedCpu();
         var target;
         var spawn = Game.getObjectById(creep.memory.home.id);
         var extensions = creep.room.memory.structures.extensions;
         var spawns = creep.room.memory.structures.spawns;
-        /*var targets = []
-         for(var item in extensions){
-         targets.push(Game.getObjectById(extensions[item]))
-         }
-         for(var item in spawns){
-         targets.push(Game.getObjectById(spawns[item]))
-         }*/
+
 
         if(this.room.memory.roomEnergy < this.room.memory.energyCapacity ) {
             task = 'assign target extension';
-            target = this.pos.findClosest(FIND_MY_STRUCTURES, {filter:function(object) {
+            target = this.pos.findClosest(FIND_MY_STRUCTURES, {filter:function(object){
+
                 if(object.structureType == STRUCTURE_SPAWN || object.structureType == STRUCTURE_EXTENSION)
-                    if(object.my && object.energy < object.energyCapacity)
-                        return object;
+                    if(object.my && object.energy < object.energyCapacity){return object;}
 
             }});
+            target = Game.rooms[target.roomName].lookForAt('structure',target);
         }
         else {
             return;
@@ -230,7 +232,7 @@ module.exports = function() {
             target = this.pos.findClosest(this.room.memory.couriers,{filter:function(object){
                 if(object.memory.role != undefined)
                     if(object.memory.role == 'courier' && object.energy < object.energyCapacity){
-                        return object
+                        return object;
                     }
             }});
             if(target) {
@@ -241,42 +243,52 @@ module.exports = function() {
             }
         }
 
+
+
         if(this.pos.isNearTo(target)) {
+            console.log(target);
             this.transferEnergy(target);
         }
-        else {
+        else{
             this.moveTo(target,{reusePath:20});
+            // printElapsed(cpu)
         }
-    };
 
-    Creep.prototype.getDropped = function() {
-        if(creep.energy == creep.energyCapacity)
-            return;
+
+    }
+
+    Creep.prototype.getDropped = function(){
+        if(creep.energy == creep.energyCapacity)return;
         var dropped = creep.pos.findClosest(creep.room.memory.droppedEnergy,{method:'astar'});
-        if(creep.pos.isNearTo(dropped)) {
+        if(creep.pos.isNearTo(dropped))
+        {
             creep.pickup(dropped);
         }
     }
-};
 
-function checkLink(link,sources) {
+}
+
+function checkLink(link,sources){
     link = Game.getObjectById(link);
     var linkPos = link.pos;
 
-    if(linkPos.inRangeTo(link.room.controller,3)) {
-        return 'controller';
+    if(linkPos.inRangeTo(link.room.controller,3)){
+        return 'controller'
     }
-    else {
-        for(var source in sources) {
+    else{
+        for(var source in sources){
             source = Game.getObjectById(sources[source]);
-            if(linkPos.inRangeTo(source,4)) {
+            if(linkPos.inRangeTo(source,4)){
                 return 'source'
             }
         }
-        return 'node';
+        return 'node'
     }
 }
+function checkWall(wall,lairs){
 
-function checkWall(wall,lairs) {
+}
 
+function printElapsed(cpu){
+    console.log(Game.getUsedCpu() - cpu);
 }
